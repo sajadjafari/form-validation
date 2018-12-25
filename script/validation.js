@@ -162,11 +162,25 @@
 
 		};
 
+		this.removeCommas = function (value) {
+
+			return value.replace(/[,،]/g, '');
+
+		};
+
 		// -- Validations
 
 		this.isNumber = function (value) {
 
 			return !Number.isNaN(Number.parseFloat(value));
+
+		};
+
+		this.isPattern = function (value, pattern, reverse) {
+
+			var regExp = new RegExp(pattern, 'g');
+
+			return reverse ? !value.match(regExp) : !!value.match(regExp);
 
 		};
 
@@ -205,6 +219,18 @@
 		this.isDomain = function (value) {
 
 			return this.pattern.test(value, this.pattern.domain);
+
+		};
+
+		this.isPhone = function (value) {
+
+			return validation.pattern.checkValue(value, validation.pattern.phone);
+
+		};
+
+		this.isMobile = function (value) {
+
+			return validation.pattern.checkValue(value, validation.pattern.mobile);
 
 		};
 
@@ -477,32 +503,6 @@
 
 		};
 
-		this.isPattern = function (value, pattern, reverse) {
-
-			var regExp = new RegExp(pattern, 'g');
-
-			return reverse ? !value.match(regExp) : !!value.match(regExp);
-
-		};
-
-		this.isPhone = function (value) {
-
-			return validation.pattern.checkValue(value, validation.pattern.phone);
-
-		};
-
-		this.isMobile = function (value) {
-
-			return validation.pattern.checkValue(value, validation.pattern.mobile);
-
-		};
-
-		this.removeCommas = function (value) {
-
-			return value.replace(/[,،]/g, '');
-
-		};
-
 		// -- Validators
 
 		this.required = function (input) {
@@ -770,7 +770,7 @@
 
 				} else {
 
-					if (!validator.IBAN(value))
+					if (!validation.IBAN(value))
 						input.addError(validation.errors.IBAN);
 
 				}
@@ -789,14 +789,14 @@
 
 					if (!input.isEmpty()) {
 
-						if (!validator.checkPersonalID(value))
+						if (!validation.checkPersonalID(value))
 							input.addError(validation.errors.personalID);
 
 					}
 
 				} else {
 
-					if (!validator.checkPersonalID(value))
+					if (!validation.checkPersonalID(value))
 						input.addError(validation.errors.personalID);
 
 				}
@@ -813,17 +813,13 @@
 
 				if (this.isRequired()) {
 
-					if (!this.isEmpty()) {
-
-						if (!validation.checkZipCode(value))
-							validator.addError(validation.errors.zipCode);
-
-					}
+					if (!this.isEmpty() && !validation.checkZipCode(value))
+						validation.addError(input, validation.errors.zipCode);
 
 				} else {
 
 					if (!validation.checkZipCode(value))
-						validator.addError(validation.errors.zipCode);
+						validation.addError(input, validation.errors.zipCode);
 
 				}
 
@@ -1207,9 +1203,6 @@
 		var p = this.parentNode,
 			_regexp = new RegExp('\\s*' + cn, 'g');
 
-		console.log(p.className);
-
-		// while (p.className.indexOf(cn) < 0) {
 		while (!p.className.match(_regexp)) {
 			p = p.parentNode;
 		}
