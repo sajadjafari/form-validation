@@ -252,11 +252,11 @@
 
 		};
 
-		this.iban = function (value) {
-
-			return this.IBAN(value.trim());
-
-		};
+		// this.isIBAN = function (value) {
+		//
+		// 	return this.IBAN(value.trim().replace(/\s/g, ''));
+		//
+		// };
 
 		this.hasMinChar = function (input) {
 
@@ -338,7 +338,7 @@
 
 		};
 
-		this.IBAN = function (IBAN) {
+		this.isIBAN = function (IBAN) {
 
 			var _IBAN = IBAN.toUpperCase(),
 
@@ -757,20 +757,20 @@
 
 			input.on('blur', function () {
 
-				var value = this.value;
+				var value = this.value = this.value.trim().replace(/\s/g, '');
 
 				if (this.isRequired()) {
 
 					if (!this.isEmpty()) {
 
-						if (!validation.IBAN(value))
+						if (!validation.isIBAN(value))
 							input.addError(validation.errors.IBAN);
 
 					}
 
 				} else {
 
-					if (!validation.IBAN(value))
+					if (!validation.isIBAN(value))
 						input.addError(validation.errors.IBAN);
 
 				}
@@ -1001,6 +1001,9 @@
 
 			if (options) {
 
+				if (options.parentNode)
+					validation.errors.parentNode = options.parentNode;
+
 				if (options.errors) {
 
 					for (var i in options.errors)
@@ -1008,17 +1011,6 @@
 							validation.errors[i] = options.errors[i];
 
 				}
-
-				if (options.styles) {
-
-					for (var j in options.styles)
-						if (options.styles.hasOwnProperty(j) && validation.styles.hasOwnProperty(j))
-							validation.styles[j] = options.styles[j];
-
-				}
-
-				if (options.parentNode)
-					validation.errors.parentNode = options.parentNode;
 
 			}
 
