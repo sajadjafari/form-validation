@@ -146,17 +146,19 @@
 			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
 
 			if (!parent.className.match(_regexp)) {
-
 				parent.className = parent.className + ' ' + validation.errors.cn;
-
 			}
+
 			parent.setAttribute(validation.errors.dError, error);
+
 		};
 
 		// -- Validations
 
 		this.isNumber = function (value) {
+
 			return !Number.isNaN(Number.parseFloat(value));
+
 		};
 
 		this.isEmpty = function (input) {
@@ -845,6 +847,10 @@
 					for (var i = 0, vl = formInputs.length; i < vl; i++) {
 
 						input = formInputs[i];
+
+						if (!input.hasAttribute('data-validation')) //|| !input.initialized
+							continue;
+
 						validationRules = input.getAttribute('data-validation').split('|');
 
 						for (var j = 0, rl = validationRules.length; j < rl; j++) {
@@ -954,15 +960,14 @@
 								console.error(invalidInputs[k][1], invalidInputs[k][0]);
 							}
 
-						} else {
-
-							return false;
-
 						}
+
+						return false;
 
 					} else {
 
 						return true;
+
 					}
 
 				}
@@ -979,7 +984,7 @@
 
 		this.init = function (options) {
 
-			var inputs = !!options.input ? options.input : document.querySelectorAll('[data-validation]'),
+			var inputs = !!options.input ? [options.input] : document.querySelectorAll('[data-validation]'),
 				input,
 				rules,
 				rule,
@@ -1015,9 +1020,11 @@
 			for (var i = 0, l = inputs.length; i < l; i++) {
 
 				input = inputs[i];
-				rules = input.getAttribute('data-validation').split('|');
 
-				if (input.initialized) return;
+				if (!input.hasAttribute('data-validation') || input.initialized)
+					continue;
+
+				rules = input.getAttribute('data-validation').split('|');
 
 				input.on('focusin', function () {
 					this.removeError();
@@ -1304,7 +1311,7 @@
 
 	EventTarget.prototype.validation = function () {
 
-		initialize(this);
+		validation.init({ input: this });
 
 	};
 
