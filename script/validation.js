@@ -66,16 +66,6 @@
 
 		};
 
-		this.styles = {
-			direction: 'ltr',
-			float: 'right',
-			background: '#f00',
-			color: '#fff',
-			font: 'inherit',
-			fontSize: '1em',
-			fontWeight: '400'
-		};
-
 		this.pattern = {
 
 			url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\/\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\/\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\/\?)*)?(((\[publisher-id\]&[a-zA-Z_]*=(.)*)|(\[publisher-id\]*))|((\[publisher-name\]&[a-zA-Z_]*=(.)*)|(\[publisher-name\]*)))?$/i,
@@ -130,13 +120,26 @@
 
 		// -- Error handlers
 
+		this.createErrorSpan = function (errorMessage) {
+
+			return '<div class="error" ><span style="color: red;">' + errorMessage + '</span></div>';
+
+		};
+
 		this.removeError = function (input) {
 
 			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
+			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
+			var errors = parent.querySelectorAll('.error');
 
-			input.parentElement.className = input.parentElement.className.replace(_regexp, '');
+			parent.className = input.parentElement.className.replace(_regexp, '');
+			parent.removeAttribute('data-error');
 
-			input.parentElement.removeAttribute('data-error');
+			if (errors.length) {
+				for (var i = 0; i < errors.length; i++) {
+					errors[i].remove();
+				}
+			}
 
 		};
 
@@ -144,12 +147,18 @@
 
 			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
 			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
+			var errors = parent.querySelectorAll('.error');
 
 			if (!parent.className.match(_regexp)) {
 				parent.className = parent.className + ' ' + validation.errors.cn;
 			}
-
 			parent.setAttribute(validation.errors.dError, error);
+
+			// append error span
+
+			if (!errors.length) {
+				parent.insertAdjacentHTML('beforeend', this.createErrorSpan(error));
+			}
 
 		};
 
@@ -822,6 +831,8 @@
 
 		};
 
+		// -- Form validator
+
 		this.form = function (form, options) {
 
 			if (typeof form === 'string') {
@@ -1311,7 +1322,7 @@
 
 	EventTarget.prototype.validation = function () {
 
-		validation.init({ input: this });
+		validation.init({input: this});
 
 	};
 

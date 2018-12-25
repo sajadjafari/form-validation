@@ -61,6 +61,7 @@ input {
     width: 100%;
 }
 
+/*
 .input-row.input-error:before {
     content: attr(data-error);
     position: absolute;
@@ -84,4 +85,4 @@ input {
     transform: translateY(-100%);
     top: -5px;
     right: 5px;
-}
+}*/
