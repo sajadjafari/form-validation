@@ -128,11 +128,11 @@
 
 		this.removeError = function (input) {
 
-			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
-			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
-			var errors = parent.querySelectorAll('.error');
+			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g'),
+				parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement),
+				errors = parent.querySelectorAll('.error');
 
-			parent.className = input.parentElement.className.replace(_regexp, '');
+			parent.className = parent.className.replace(_regexp, '');
 			parent.removeAttribute('data-error');
 
 			if (errors.length) {
@@ -145,9 +145,9 @@
 
 		this.addError = function (input, error) {
 
-			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
-			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
-			var errors = parent.querySelectorAll('.error');
+			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g'),
+				parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement),
+				errors = parent.querySelectorAll('.error');
 
 			if (!parent.className.match(_regexp)) {
 				parent.className = parent.className + ' ' + validation.errors.cn;
@@ -1204,12 +1204,14 @@
 
 	EventTarget.prototype.findParent = function (cn) {
 
-		var p = this.parentNode;
+		var p = this.parentNode,
+			_regexp = new RegExp('\\s*' + cn, 'g');
 
-		while (p.className.indexOf(cn) < 0) {
+		console.log(p.className);
 
+		// while (p.className.indexOf(cn) < 0) {
+		while (!p.className.match(_regexp)) {
 			p = p.parentNode;
-
 		}
 
 		return p;
