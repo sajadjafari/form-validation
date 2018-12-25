@@ -47,6 +47,7 @@
 			parentNode: '',
 
 			// Input default errors.
+			NaN: 'Please enter Numbers only!',
 			required: 'This field is required!',
 			email: 'Email is not valid!',
 			url: 'URL is not valid!',
@@ -61,8 +62,8 @@
 			fa: 'Please enter in Persian',
 			minChar: ['You can enter minimum', 'characters!'],
 			maxChar: ['You can enter maximum', 'characters!'],
-			minNum: ['You must enter a number grater than', ''],
-			maxNum: ['You must enter a number lower than', '']
+			minNum: ['You must enter a number grater than', '.'],
+			maxNum: ['You must enter a number lower than', '.']
 
 		};
 
@@ -162,6 +163,16 @@
 
 		};
 
+		this.addCommas = function (e) {
+
+			var t, n, i, a = /(\d+)(\d{3})/;
+
+			for (e = e.toString(), e = e.replace(/[^0-9]/g, ''), e += '', t = e.split('.'), n = t[0], i = t.length > 1 ? '.' + t[1] : ''; a.test(n);)
+				n = n.replace(a, '$1,$2');
+
+			return n + i;
+		};
+
 		this.removeCommas = function (value) {
 
 			return value.replace(/[,،]/g, '');
@@ -192,15 +203,11 @@
 
 		};
 
-		this.isRequired = function ($this) {
+		this.isRequired = function (input) {
 
-			var rules = $this.getAttribute('data-validation').split('|');
+			var rules = input.getAttribute('data-validation');
 
-			for (var i = 0, l = rules.length; i < l; i++)
-				if (rules[i] === 'required')
-					return true;
-
-			return false;
+			return rules ? rules.match(/required/g) : false;
 
 		};
 
@@ -251,12 +258,6 @@
 			return this.checkZipCode(value.trim());
 
 		};
-
-		// this.isIBAN = function (value) {
-		//
-		// 	return this.IBAN(value.trim().replace(/\s/g, ''));
-		//
-		// };
 
 		this.hasMinChar = function (input) {
 
@@ -448,33 +449,28 @@
 
 		};
 
-		this.checkMinNum = function (input, minNum, api) {
+		this.checkMinNum = function (input, minNum) {
 
-			var value = removeCommas(input.value);
+			var value = Number.parseFloat(input.value);
 
-			api = api != undefined ? api : false;
+			if (!isNaN(value)) {
 
-			value = value ? parseInt(value) : false;
-
-			if (!api) {
+				input.value = value;
 
 				if (value < minNum) {
 
-					input.addError('حداقل عدد ' + addCommas(minNum) + ' باید وارد شود!');
+					input.addError(t.errors.minNum[0] + ' ' + minNum + ' ' + t.errors.minNum[1]);
 
-				} else {
+				} else if (!input.isRequired()) {
 
-					/*if (!!value)
-					 hasAnotherError = false;*/
-
-					if (!input.isRequired())
-						input.removeError();
+					input.removeError();
 
 				}
 
 			} else {
 
-				return value >= minNum;
+				input.addError(t.errors.NaN);
+				return false;
 
 			}
 
@@ -620,9 +616,9 @@
 				if (validation.returnFalseKeys(e) || e.ctrlKey)
 					return;
 
-				if (this.isRequired()) {
+				if (input.isRequired()) {
 
-					if (!this.isEmpty())
+					if (!input.isEmpty())
 						validation.checkMinCharacter(this, minChar);
 
 				} else {
@@ -665,18 +661,16 @@
 
 		this.minNumber = function (input, min) {
 
-			var minNum = parseInt(min);
+			input.on('blur', function () {
 
-			input.on('blur input', function () {
+				if (input.isRequired()) {
 
-				if (this.isRequired()) {
-
-					if (!this.isEmpty())
-						validation.checkMinNum(this, minNum);
+					if (!input.isEmpty())
+						validation.checkMinNum(this, min);
 
 				} else {
 
-					validation.checkMinNum(this, minNum);
+					validation.checkMinNum(this, min);
 
 				}
 
@@ -759,9 +753,9 @@
 
 				var value = this.value = this.value.trim().replace(/\s/g, '');
 
-				if (this.isRequired()) {
+				if (input.isRequired()) {
 
-					if (!this.isEmpty()) {
+					if (!input.isEmpty()) {
 
 						if (!validation.isIBAN(value))
 							input.addError(validation.errors.IBAN);
@@ -811,9 +805,9 @@
 
 				var value = input.value;
 
-				if (this.isRequired()) {
+				if (input.isRequired()) {
 
-					if (!this.isEmpty() && !validation.checkZipCode(value))
+					if (!input.isEmpty() && !validation.checkZipCode(value))
 						validation.addError(input, validation.errors.zipCode);
 
 				} else {
