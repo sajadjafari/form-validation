@@ -1,1273 +1,1313 @@
 ;!(function (w, d) {
 
-    'use strict';
-
-    var Validations = function () {
-
-		    var t = this;
-
-            this.codes = {
-
-                falseKeys: [8, 9, 13, 16, 17, 18, 20, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123],
-                enDigits: {
-                    1776: 48,
-                    1777: 49,
-                    1778: 50,
-                    1779: 51,
-                    1780: 52,
-                    1781: 53,
-                    1782: 54,
-                    1783: 55,
-                    1784: 56,
-                    1785: 57
-                },
-                faDigits: {
-                    48: 1776,
-                    49: 1777,
-                    50: 1778,
-                    51: 1779,
-                    52: 1780,
-                    53: 1781,
-                    54: 1782,
-                    55: 1783,
-                    56: 1784,
-                    57: 1785
-                },
-                enAlpha: [32, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 42, 45, 43, 46, 61, 95, 41, 40, 38, 94, 37, 36, 35, 64, 33, 126, 96, 125, 123, 124, 92, 47, 39, 34, 59, 58, 63, 62, 60, 44],
-                faAlpha: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 92, 94, 95, 96, 123, 124, 125, 126, 171, 187, 1548, 1563, 1567, 1569, 1570, 1571, 1573, 1574, 1575, 1576, 1578, 1579, 1580, 1581, 1582, 1583, 1584, 1585, 1586, 1587, 1588, 1589, 1590, 1591, 1592, 1593, 1594, 1600, 1601, 1602, 1604, 1605, 1606, 1607, 1608, 1611, 1613, 1662, 1670, 1688, 1705, 1711, 1740, 1776, 1777, 1778, 1779, 1780, 1781, 1782, 1783, 1784, 1785]
+	'use strict';
+
+	var Validations = function () {
+
+		var t = this;
+
+		this.codes = {
+
+			falseKeys: [8, 9, 13, 16, 17, 18, 20, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123],
+			enDigits: {
+				1776: 48,
+				1777: 49,
+				1778: 50,
+				1779: 51,
+				1780: 52,
+				1781: 53,
+				1782: 54,
+				1783: 55,
+				1784: 56,
+				1785: 57
+			},
+			faDigits: {
+				48: 1776,
+				49: 1777,
+				50: 1778,
+				51: 1779,
+				52: 1780,
+				53: 1781,
+				54: 1782,
+				55: 1783,
+				56: 1784,
+				57: 1785
+			},
+			enAlpha: [32, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 42, 45, 43, 46, 61, 95, 41, 40, 38, 94, 37, 36, 35, 64, 33, 126, 96, 125, 123, 124, 92, 47, 39, 34, 59, 58, 63, 62, 60, 44],
+			faAlpha: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 92, 94, 95, 96, 123, 124, 125, 126, 171, 187, 1548, 1563, 1567, 1569, 1570, 1571, 1573, 1574, 1575, 1576, 1578, 1579, 1580, 1581, 1582, 1583, 1584, 1585, 1586, 1587, 1588, 1589, 1590, 1591, 1592, 1593, 1594, 1600, 1601, 1602, 1604, 1605, 1606, 1607, 1608, 1611, 1613, 1662, 1670, 1688, 1705, 1711, 1740, 1776, 1777, 1778, 1779, 1780, 1781, 1782, 1783, 1784, 1785]
 
-            };
+		};
 
-            this.errors = {
+		this.errors = {
 
-                // Input errors class name and error message attr name, default is [data-error].
-                cn: 'input-error',
-                dError: 'data-error',
-                // parentNode: options && options.parentNode ? options.parentNode : '',
-                parentNode: '',
+			// Input errors class name and error message attr name, default is [data-error].
+			cn: 'input-error',
+			dError: 'data-error',
+			// parentNode: options && options.parentNode ? options.parentNode : '',
+			parentNode: '',
 
-                // Input default errors.
-                required: 'This field is required!',
-                email: 'Email is not valid!',
-                url: 'URL is not valid!',
-                phone: 'Phone is not valid!',
-                mobile: 'Mobile is not valid!',
-                domain: 'Domain is not valid!',
-                number: 'Please enter numbers only',
-                IBAN: 'IBAN code in not valid!',
-                personalID: 'ID is not valid!',
-                zipCode: 'Postal code is not valid!',
-                en: 'Please enter in English',
-                fa: 'Please enter in Persian',
-                minChar: ['You can enter minimum', 'characters!'],
-                maxChar: ['You can enter maximum', 'characters!'],
-                minNum: ['You must enter a number grater than', ''],
-                maxNum: ['You must enter a number lower than', '']
+			// Input default errors.
+			required: 'This field is required!',
+			email: 'Email is not valid!',
+			url: 'URL is not valid!',
+			phone: 'Phone is not valid!',
+			mobile: 'Mobile is not valid!',
+			domain: 'Domain is not valid!',
+			number: 'Please enter numbers only',
+			IBAN: 'IBAN code in not valid!',
+			personalID: 'ID is not valid!',
+			zipCode: 'Postal code is not valid!',
+			en: 'Please enter in English',
+			fa: 'Please enter in Persian',
+			minChar: ['You can enter minimum', 'characters!'],
+			maxChar: ['You can enter maximum', 'characters!'],
+			minNum: ['You must enter a number grater than', ''],
+			maxNum: ['You must enter a number lower than', '']
 
-            };
+		};
 
-            this.styles = {
-                direction: 'ltr',
-                float: 'right',
-                background: '#f00',
-                color: '#fff',
-                font: 'inherit',
-                fontSize: '1em',
-                fontWeight: '400'
-            };
+		this.styles = {
+			direction: 'ltr',
+			float: 'right',
+			background: '#f00',
+			color: '#fff',
+			font: 'inherit',
+			fontSize: '1em',
+			fontWeight: '400'
+		};
 
-            this.pattern = {
+		this.pattern = {
 
-                url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\/\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\/\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\/\?)*)?(((\[publisher-id\]&[a-zA-Z_]*=(.)*)|(\[publisher-id\]*))|((\[publisher-name\]&[a-zA-Z_]*=(.)*)|(\[publisher-name\]*)))?$/i,
+			url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\/\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\/\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\/\?)*)?(((\[publisher-id\]&[a-zA-Z_]*=(.)*)|(\[publisher-id\]*))|((\[publisher-name\]&[a-zA-Z_]*=(.)*)|(\[publisher-name\]*)))?$/i,
 
-                email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+			email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
-                mobile: /^(((98)|(\+98)|(0098)|0)(9)[0-9]{9})+$|(^(9)[0-9]{9}$)/,
+			mobile: /^(((98)|(\+98)|(0098)|0)(9)[0-9]{9})+$|(^(9)[0-9]{9}$)/,
 
-                phone: /^[2-9][0-9]{7}$/,
+			phone: /^[2-9][0-9]{7}$/,
 
-                domain: /^([a-zA-Z0-9][a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$/i,
+			domain: /^([a-zA-Z0-9][a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$/i,
 
-                check: function (input, pattern, error) {
+			check: function (input, pattern, error) {
 
-                    var checkIt = function () {
+				var checkIt = function () {
 
-                        if (input.value.match(pattern)) {
+					if (input.value.match(pattern)) {
 
-                            input.removeError();
+						input.removeError();
 
-                        } else {
+					} else {
 
-                            input.addError(error);
-                        }
+						input.addError(error);
+					}
 
-                    };
+				};
 
-                    if (input.isRequired()) {
+				if (input.isRequired()) {
 
-                        if (!input.isEmpty())
-                            checkIt();
+					if (!input.isEmpty())
+						checkIt();
 
-                    } else {
+				} else {
 
-                        checkIt();
+					checkIt();
 
-                    }
+				}
 
-                },
+			},
 
-                test: function (value, pattern) {
-                    return !!value.match(pattern);
-                }
+			checkValue: function (value, pattern) {
 
-            };
+				return value.match(pattern);
 
-            this.isEmpty = function (input) {
+			},
 
-                var value = input.value.trim();
+			test: function (value, pattern) {
+				return !!value.match(pattern);
+			}
 
-                return value === '' || value === undefined || value === null;
+		};
 
-            };
+		// -- Error handlers
 
-            this.isRequired = function ($this) {
+		this.removeError = function (input) {
 
-                var rules = $this.getAttribute('data-validation').split('|');
+			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
 
-                for (var i = 0, l = rules.length; i < l; i++)
-                    if (rules[i] === 'required')
-                        return true;
+			input.parentElement.className = input.parentElement.className.replace(_regexp, '');
 
-                return false;
+			input.parentElement.removeAttribute('data-error');
 
-            };
+		};
 
-            this.isEmail = function (input) {
+		this.addError = function (input, error) {
 
-                return this.pattern.test(input.value, this.pattern.email);
+			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
+			var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement);
 
-            };
+			if (!parent.className.match(_regexp)) {
 
-            this.isURL = function (input) {
+				parent.className = parent.className + ' ' + validation.errors.cn;
 
-                return this.pattern.test(input.value, this.pattern.url);
+			}
+			parent.setAttribute(validation.errors.dError, error);
+		};
 
-            };
+		// -- Validations
 
-            this.isDomain = function (input) {
+		this.isNumber = function (value) {
+			return !Number.isNaN(Number.parseFloat(value));
+		};
 
-                return this.pattern.test(input.value, this.pattern.domain);
+		this.isEmpty = function (input) {
 
-            };
+			var value = input.value.trim();
 
-            this.isPersonalID = function (value) {
+			return value === '' || value === undefined || value === null;
 
-                return this.checkPersonalID(value.trim());
+		};
 
-            };
+		this.isRequired = function ($this) {
 
-            this.isZipCode = function (value) {
+			var rules = $this.getAttribute('data-validation').split('|');
 
-                return this.checkZipCode(value.trim());
+			for (var i = 0, l = rules.length; i < l; i++)
+				if (rules[i] === 'required')
+					return true;
 
-            };
+			return false;
 
-            this.iban = function (value) {
+		};
 
-                return this.IBAN(value.trim());
+		this.isEmail = function (value) {
 
-            };
+			return this.pattern.test(value, this.pattern.email);
 
-            this.hasMinChar = function (input) {
+		};
 
-                var minChar = input.dataset.validation;
+		this.isURL = function (value) {
 
-                if (!!minChar.match(/min:[0-9]*/)) {
+			return this.pattern.test(value, this.pattern.url);
 
-                    minChar = minChar.match(/min:[0-9]*/)[0];
+		};
 
-                    minChar = minChar.match(/[0-9]+/)[0];
+		this.isDomain = function (value) {
 
-                    return validation.checkMinCharacter(input, minChar, true);
+			return this.pattern.test(value, this.pattern.domain);
 
-                } else {
+		};
 
-                    return false;
+		this.isPersonalID = function (value) {
 
-                }
+			if (Number.isInteger(value))
+				value = value.toString();
 
-            };
+			return this.checkPersonalID(value.trim());
 
-            this.hasMinNum = function ($this) {
+		};
 
-                var minChar = $this.dataset.validation;
+		this.isZipCode = function (value) {
 
-                if (!!minChar.match(/min-num:[0-9]*/)) {
+			if (this.isNumber(value))
+				value = value.toString();
 
-                    minChar = minChar.match(/min-num:[0-9]*/)[0];
+			return this.checkZipCode(value.trim());
 
-                    minChar = minChar.match(/[0-9]+/)[0];
+		};
 
-                    return checkMinNum($this, minChar, true);
+		this.iban = function (value) {
 
-                } else {
+			return this.IBAN(value.trim());
 
-                    return false;
+		};
 
-                }
+		this.hasMinChar = function (input) {
 
-            };
+			var minChar = input.dataset.validation;
 
-            this.returnFalseKeys = function (e) {
+			if (!!minChar.match(/min:[0-9]*/)) {
 
-                for (var i = 0, l = validation.codes.falseKeys.length; i < l; i++)
-                    if (e.keyCode === validation.codes.falseKeys[i])
-                        return true;
+				minChar = minChar.match(/min:[0-9]*/)[0];
 
-                return false;
+				minChar = minChar.match(/[0-9]+/)[0];
 
-            };
+				return validation.checkMinCharacter(input, minChar, true);
 
-            this.translateDigit = function (e, input, digits) {
+			} else {
 
-                var charCode = e.key.charCodeAt(0);
+				return false;
 
-                if (this.returnFalseKeys(e) || e.ctrlKey) return;
+			}
 
-                for (var id in digits) {
+		};
 
-                    if (digits.hasOwnProperty(id)) {
+		this.hasMinNum = function ($this) {
 
-                        if (charCode === parseInt(id) || charCode === digits[id]) {
+			var minChar = $this.dataset.validation;
 
-                            e.target.value += String.fromCharCode(digits [parseInt(id)]);
-                            input.removeError();
-                            break;
+			if (!!minChar.match(/min-num:[0-9]*/)) {
 
-                        } else {
+				minChar = minChar.match(/min-num:[0-9]*/)[0];
 
-                            input.addError(validation.errors.number);
+				minChar = minChar.match(/[0-9]+/)[0];
 
-                        }
+				return checkMinNum($this, minChar, true);
 
-                    }
+			} else {
 
-                }
+				return false;
 
-                e.preventDefault();
+			}
 
-            };
+		};
 
-            this.IBAN = function (IBAN) {
+		this.returnFalseKeys = function (e) {
 
-                var _IBAN = IBAN.toUpperCase(),
+			for (var i = 0, l = validation.codes.falseKeys.length; i < l; i++)
+				if (e.keyCode === validation.codes.falseKeys[i])
+					return true;
 
-                    modulo = function (code, divisor) {
+			return false;
 
-                        var cDivident = '',
-                            cRest = '',
-                            cChar,
-                            cOperator;
+		};
 
-                        for (var i = 0, il = code.length; i < il; i++) {
+		this.translateDigit = function (e, input, digits) {
 
-                            cChar = code[i];
+			var charCode = e.key.charCodeAt(0);
 
-                            cOperator = cRest + '' + cDivident + '' + cChar;
+			if (this.returnFalseKeys(e) || e.ctrlKey) return;
 
-                            if (cOperator < parseInt(divisor)) {
+			for (var id in digits) {
 
-                                cDivident += '' + cChar;
+				if (digits.hasOwnProperty(id)) {
 
-                            } else {
+					if (charCode === parseInt(id) || charCode === digits[id]) {
 
-                                cRest = cOperator % divisor;
+						e.target.value += String.fromCharCode(digits [parseInt(id)]);
+						input.removeError();
+						break;
 
-                                if (cRest === 0)
-                                    cRest = '';
+					} else {
 
-                                cDivident = '';
+						input.addError(validation.errors.number);
 
-                            }
+					}
 
-                        }
+				}
 
-                        cRest += '' + cDivident;
+			}
 
-                        if (cRest === '')
-                            cRest = 0;
+			e.preventDefault();
 
-                        return parseInt(cRest, 10) === 1;
+		};
 
-                    };
+		this.IBAN = function (IBAN) {
 
-                if (_IBAN.search(/^[A-Z]{2}/gi) < 0)
-                    return false;
+			var _IBAN = IBAN.toUpperCase(),
 
-                _IBAN = _IBAN.substring(4) + _IBAN.substring(0, 4);
+				modulo = function (code, divisor) {
 
-                _IBAN = _IBAN.replace(/[A-Z]/g, function (match) {
+					var cDivident = '',
+						cRest = '',
+						cChar,
+						cOperator;
 
-                    return match.charCodeAt(0) - 55;
+					for (var i = 0, il = code.length; i < il; i++) {
 
-                });
+						cChar = code[i];
 
-                return modulo(_IBAN, 97);
+						cOperator = cRest + '' + cDivident + '' + cChar;
 
-            };
+						if (cOperator < parseInt(divisor)) {
 
-            this.checkPersonalID = function (code) {
+							cDivident += '' + cChar;
 
-                var control,
-                    sum = 0;
+						} else {
 
-                if (code.length < 8 || parseInt(code, 10) === 0)
-                    return false;
+							cRest = cOperator % divisor;
 
-                code = ( '0000' + code ).substr(code.length + 4 - 10);
+							if (cRest === 0)
+								cRest = '';
 
-                if (parseInt(code.substr(3, 6), 10) === 0)
-                    return false;
+							cDivident = '';
 
-                control = parseInt(code.substr(9, 1), 10);
+						}
 
-                for (var i = 0; i < 9; i++)
-                    sum += parseInt(code.substr(i, 1), 10) * ( 10 - i );
+					}
 
-                sum = sum % 11;
+					cRest += '' + cDivident;
 
-                return ( sum < 2 && control == sum ) || ( sum >= 2 && control == ( 11 - sum ) );
+					if (cRest === '')
+						cRest = 0;
 
-            };
+					return parseInt(cRest, 10) === 1;
 
-            this.checkZipCode = function (code) {
+				};
 
-                return code.search(/^(\d{5}-?\d{5})$/) >= 0;
+			if (_IBAN.search(/^[A-Z]{2}/gi) < 0)
+				return false;
 
-            };
+			_IBAN = _IBAN.substring(4) + _IBAN.substring(0, 4);
 
-            this.checkMinCharacter = function (input, minChar, api) {
+			_IBAN = _IBAN.replace(/[A-Z]/g, function (match) {
 
-                var value = input.value.trim();
+				return match.charCodeAt(0) - 55;
 
-                api = api !== undefined ? api : false;
+			});
 
-                if (!api) {
+			return modulo(_IBAN, 97);
 
-                    if (value.length < parseInt(minChar)) {
+		};
 
-                        input.addError(this.errors.minChar[0] + ' ' + minChar + ' ' + this.errors.minChar[1]);
+		this.checkPersonalID = function (code) {
 
-                    }
+			var control,
+				sum = 0;
 
-                } else {
+			if (code.length < 8 || parseInt(code, 10) === 0)
+				return false;
 
-                    return value.length >= parseInt(minChar);
+			code = ('0000' + code).substr(code.length + 4 - 10);
 
-                }
+			if (parseInt(code.substr(3, 6), 10) === 0)
+				return false;
 
-            };
+			control = parseInt(code.substr(9, 1), 10);
 
-            this.checkMinNum = function (input, minNum, api) {
+			for (var i = 0; i < 9; i++)
+				sum += parseInt(code.substr(i, 1), 10) * (10 - i);
 
-                var value = removeCommas(input.value);
+			sum = sum % 11;
 
-                api = api != undefined ? api : false;
+			return (sum < 2 && control == sum) || (sum >= 2 && control == (11 - sum));
 
-                value = value ? parseInt(value) : false;
+		};
 
-                if (!api) {
+		this.checkZipCode = function (code) {
 
-                    if (value < minNum) {
+			return code.search(/^(\d{5}-?\d{5})$/) >= 0;
 
-                        input.addError("حداقل عدد " + addCommas(minNum) + " باید وارد شود!");
+		};
 
-                    } else {
+		this.checkMinCharacter = function (input, minChar, api) {
 
-                        /*if (!!value)
-                         hasAnotherError = false;*/
+			var value = input.value.trim();
 
-                        if (!input.isRequired())
-                            input.removeError();
+			api = api !== undefined ? api : false;
 
-                    }
+			if (!api) {
 
-                } else {
+				if (value.length < parseInt(minChar)) {
 
-                    return value >= minNum;
+					input.addError(this.errors.minChar[0] + ' ' + minChar + ' ' + this.errors.minChar[1]);
 
-                }
+				}
 
-            };
+			} else {
 
-            this.checkCharacter = function (e, input, chars, charCode, errorMessage) {
+				return value.length >= parseInt(minChar);
 
-                var isTrue = false;
+			}
 
-                if (chars.indexOf(charCode) !== -1)
-                    isTrue = true;
+		};
 
-                if (!isTrue) {
+		this.checkMinNum = function (input, minNum, api) {
 
-                    e.preventDefault();
+			var value = removeCommas(input.value);
 
-                    input.addError(errorMessage);
+			api = api != undefined ? api : false;
 
-                    return false;
+			value = value ? parseInt(value) : false;
 
-                } else {
+			if (!api) {
 
-                    return true;
+				if (value < minNum) {
 
-                }
+					input.addError('حداقل عدد ' + addCommas(minNum) + ' باید وارد شود!');
 
-            };
+				} else {
 
-            this.isPattern = function (value, pattern, reverse) {
+					/*if (!!value)
+					 hasAnotherError = false;*/
 
-                var regExp = new RegExp(pattern, 'g');
+					if (!input.isRequired())
+						input.removeError();
 
-                return reverse ? !value.match(regExp) : !!value.match(regExp);
+				}
 
-            };
+			} else {
 
-            this.removeCommas = function (value) {
+				return value >= minNum;
 
-                return value.replace(/[,،]/g, '');
+			}
 
-            };
+		};
 
-            // -- Validators
+		this.checkCharacter = function (e, input, chars, charCode, errorMessage) {
 
-		    this.removeError = function (input) {
+			var isTrue = false;
 
-			    var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
+			if (chars.indexOf(charCode) !== -1)
+				isTrue = true;
 
-			    input.parentElement.className = input.parentElement.className.replace(_regexp, '');
+			if (!isTrue) {
 
-			    input.parentElement.removeAttribute('data-error');
+				e.preventDefault();
 
-		    };
+				input.addError(errorMessage);
 
-		    this.addError = function (input, error) {
+				return false;
 
-			    var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
-			    var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement );
+			} else {
 
-			    if (!parent.className.match(_regexp)) {
+				return true;
 
-				    parent.className = parent.className + ' ' + validation.errors.cn;
+			}
 
+		};
 
+		this.isPattern = function (value, pattern, reverse) {
 
-			    }
-			    parent.setAttribute(validation.errors.dError, error);
-		    };
+			var regExp = new RegExp(pattern, 'g');
 
-		    this.required = function (input) {
+			return reverse ? !value.match(regExp) : !!value.match(regExp);
 
-			    var value;
+		};
 
-			    input.on('blur', function () {
+		this.isPhone = function (value) {
 
-				    value = input.value.trim();
+			return validation.pattern.checkValue(value, validation.pattern.phone);
 
-				    if (value === '' || value === null)
-					    t.addError(this, validation.errors.required);
+		};
 
-			    })
+		this.isMobile = function (value) {
 
-		    };
+			return validation.pattern.checkValue(value, validation.pattern.mobile);
 
-		    this.email = function (input) {
+		};
 
-			    input.on('blur', function () {
+		this.removeCommas = function (value) {
 
-				    validation.pattern.check(this, validation.pattern.email, validation.errors.email);
+			return value.replace(/[,،]/g, '');
 
-			    });
+		};
 
-		    };
+		// -- Validators
 
-		    this.url = function (input) {
+		this.required = function (input) {
 
-			    input.on('blur', function () {
+			input.on('blur', function () {
 
-				    validation.pattern.check(this, validation.pattern.url, validation.errors.url);
+				var value = input.value.trim();
 
-			    });
+				if (value === '' || value === null) {
+					t.addError(this, validation.errors.required);
+				}
 
-		    };
+			})
 
-		    this.domain = function (input) {
+		};
 
-			    input.on('blur', function () {
+		this.email = function (input) {
 
-				    validation.pattern.check(this, validation.pattern.domain, validation.errors.domain);
+			input.on('blur', function () {
 
-			    });
+				validation.pattern.check(this, validation.pattern.email, validation.errors.email);
 
-		    };
+			});
 
-		    this.number = function (input, lang) {
+		};
 
-			    lang = lang.toUpperCase();
+		this.url = function (input) {
 
-			    input.on('keydown', function (e) {
+			input.on('blur', function () {
 
-				    if (lang === 'EN')
-					    validation.translateDigit(e, this, validation.codes.enDigits);
+				validation.pattern.check(this, validation.pattern.url, validation.errors.url);
 
-				    else if (lang === 'FA')
-					    validation.translateDigit(e, this, validation.codes.faDigits);
+			});
 
-			    });
+		};
 
-		    };
+		this.domain = function (input) {
 
-		    this.alphabet = function (input, lang) {
+			input.on('blur', function () {
 
-			    var charCode, value;
+				validation.pattern.check(this, validation.pattern.domain, validation.errors.domain);
 
-			    lang = lang.toUpperCase();
+			});
 
-			    input.on('keydown', function (e) {
+		};
 
-				    if (e.key) {
+		this.number = function (input, lang) {
 
-					    charCode = e.key.charCodeAt(0);
+			lang = lang.toUpperCase();
 
-					    if (validation.returnFalseKeys(e))
-						    return;
+			input.on('keydown', function (e) {
 
-					    if (e.ctrlKey)
-						    return;
+				if (lang === 'EN')
+					validation.translateDigit(e, this, validation.codes.enDigits);
 
-					    if (lang === 'EN')
-						    validation.checkCharacter(e, input, validation.codes.enAlpha, charCode, validation.errors.en);
+				else if (lang === 'FA')
+					validation.translateDigit(e, this, validation.codes.faDigits);
 
-					    else if (lang === 'FA')
-						    validation.checkCharacter(e, input, validation.codes.faAlpha, charCode, validation.errors.fa);
+			});
 
-				    }
+		};
 
-			    });
+		this.alphabet = function (input, lang) {
 
-			    input.on('blur', function (e) {
+			var charCode, value;
 
-				    value = e.target.value;
+			lang = lang.toUpperCase();
 
-				    for (var i = 0, il = value.length; i < il; i++) {
+			input.on('keydown', function (e) {
 
-					    if (lang === 'EN')
-						    validation.checkCharacter(e, input, validation.codes.enAlpha, value[i].charCodeAt(0), validation.errors.en);
+				if (e.key) {
 
-					    else if (lang === 'FA')
-						    validation.checkCharacter(e, input, validation.codes.faAlpha, value[i].charCodeAt(0), validation.errors.fa);
+					charCode = e.key.charCodeAt(0);
 
-				    }
+					if (validation.returnFalseKeys(e))
+						return;
 
-			    });
+					if (e.ctrlKey)
+						return;
 
-		    };
+					if (lang === 'EN')
+						validation.checkCharacter(e, input, validation.codes.enAlpha, charCode, validation.errors.en);
 
-		    this.minCharacter = function (input, min) {
+					else if (lang === 'FA')
+						validation.checkCharacter(e, input, validation.codes.faAlpha, charCode, validation.errors.fa);
 
-			    var minChar = parseInt(min);
+				}
 
-			    input.on('blur', function (e) {
+			});
 
-				    if (validation.returnFalseKeys(e) || e.ctrlKey)
-					    return;
+			input.on('blur', function (e) {
 
-				    if (this.isRequired()) {
+				value = e.target.value;
 
-					    if (!this.isEmpty())
-						    validation.checkMinCharacter(this, minChar);
+				for (var i = 0, il = value.length; i < il; i++) {
 
-				    } else {
+					if (lang === 'EN')
+						validation.checkCharacter(e, input, validation.codes.enAlpha, value[i].charCodeAt(0), validation.errors.en);
 
-					    validation.checkMinCharacter(this, minChar);
+					else if (lang === 'FA')
+						validation.checkCharacter(e, input, validation.codes.faAlpha, value[i].charCodeAt(0), validation.errors.fa);
 
-				    }
+				}
 
-			    });
+			});
 
-		    };
+		};
 
-		    this.maxCharacter = function (input, max) {
+		this.minCharacter = function (input, min) {
 
-			    var maxChar = parseInt(max),
-				    value;
+			var minChar = parseInt(min);
 
-			    input.on('keydown', function (e) {
+			input.on('blur', function (e) {
 
-				    value = input.value.trim();
+				if (validation.returnFalseKeys(e) || e.ctrlKey)
+					return;
 
-				    if (validation.returnFalseKeys(e) || e.ctrlKey)
-					    return;
+				if (this.isRequired()) {
 
-				    if (value.length >= maxChar) {
+					if (!this.isEmpty())
+						validation.checkMinCharacter(this, minChar);
 
-					    e.preventDefault();
+				} else {
 
-					    input.addError(validation.errors.maxChar[0] + ' ' + maxChar + ' ' + validation.errors.maxChar[1]);
+					validation.checkMinCharacter(this, minChar);
 
-				    } else {
+				}
 
-					    input.removeError();
+			});
 
-				    }
+		};
 
-			    });
+		this.maxCharacter = function (input, max) {
 
-		    };
+			var maxChar = parseInt(max),
+				value;
 
-		    this.minNumber = function (input, min) {
+			input.on('keydown', function (e) {
 
-			    var minNum = parseInt(min);
+				value = input.value.trim();
 
-			    input.on('blur input', function () {
+				if (validation.returnFalseKeys(e) || e.ctrlKey)
+					return;
 
-				    if (this.isRequired()) {
+				if (value.length >= maxChar) {
 
-					    if (!this.isEmpty())
-						    validation.checkMinNum(this, minNum);
+					e.preventDefault();
 
-				    } else {
+					input.addError(validation.errors.maxChar[0] + ' ' + maxChar + ' ' + validation.errors.maxChar[1]);
 
-					    validation.checkMinNum(this, minNum);
+				} else {
 
-				    }
+					input.removeError();
 
-			    });
+				}
 
-			    input.on('focusin', function () {
+			});
 
-				    input.removeError();
+		};
 
-			    });
+		this.minNumber = function (input, min) {
 
-		    };
+			var minNum = parseInt(min);
 
-		    this.maxNumber = function (input, max) {
+			input.on('blur input', function () {
 
-			    var maxNum = parseInt(max),
-				    value;
+				if (this.isRequired()) {
 
-			    if (!input.hasMinNum()) {
+					if (!this.isEmpty())
+						validation.checkMinNum(this, minNum);
 
-				    input.on('keydown', function (e) {
+				} else {
 
-					    validation.translateDigit(e, this, validation.codes.enDigits);
+					validation.checkMinNum(this, minNum);
 
-				    });
+				}
 
-			    }
+			});
 
-			    input.on('keydown keyup', function (e) {
+			input.on('focusin', function () {
 
-				    value = validation.removeCommas(input.value);
+				input.removeError();
 
-				    if (validation.returnFalseKeys(e))
-					    return;
+			});
 
-				    if (value > maxNum) {
+		};
 
-					    e.preventDefault();
+		this.maxNumber = function (input, max) {
 
-					    input.addError(validation.errors.maxNum[0] + maxNum + validation.errors.minNum[1]);
+			var maxNum = parseInt(max),
+				value;
 
-					    input.value = input.value.substr(0, this.value.length - 1);
+			if (!input.hasMinNum()) {
 
-				    }
+				input.on('keydown', function (e) {
 
-			    });
+					validation.translateDigit(e, this, validation.codes.enDigits);
 
-			    input.on('blur input', function () {
+				});
 
-				    if (!hasAnotherError)
-					    input.removeError();
+			}
 
-			    });
+			input.on('keydown keyup', function (e) {
 
-		    };
+				value = validation.removeCommas(input.value);
 
-		    this.mobile = function (input) {
+				if (validation.returnFalseKeys(e))
+					return;
 
-			    input.on('blur', function () {
+				if (value > maxNum) {
 
-				    validation.pattern.check(input, validation.pattern.mobile, validation.errors.mobile);
+					e.preventDefault();
 
-			    });
+					input.addError(validation.errors.maxNum[0] + maxNum + validation.errors.minNum[1]);
 
-		    };
+					input.value = input.value.substr(0, this.value.length - 1);
 
-		    this.phone = function (input) {
+				}
 
-			    input.on('blur', function () {
+			});
 
-				    validation.pattern.check(input, validation.pattern.phone, validation.errors.phone);
+			input.on('blur input', function () {
 
-			    });
+				if (!hasAnotherError)
+					input.removeError();
 
-		    };
+			});
 
-		    this.iban = function (input) {
+		};
 
-			    input.on('blur', function () {
+		this.mobile = function (input) {
 
-				    var value = this.value;
+			input.on('blur', function () {
 
-				    if (this.isRequired()) {
+				validation.pattern.check(input, validation.pattern.mobile, validation.errors.mobile);
 
-					    if (!this.isEmpty()) {
+			});
 
-						    if (!validation.IBAN(value))
-							    input.addError(validation.errors.IBAN);
+		};
 
-					    }
+		this.phone = function (input) {
 
-				    } else {
+			input.on('blur', function () {
 
-					    if (!validator.IBAN(value))
-						    input.addError(validation.errors.IBAN);
+				validation.pattern.check(input, validation.pattern.phone, validation.errors.phone);
 
-				    }
+			});
 
-			    });
+		};
 
+		this.iban = function (input) {
 
-		    };
+			input.on('blur', function () {
 
-		    this.personalID = function (input) {
+				var value = this.value;
 
-			    input.on('blur', function () {
+				if (this.isRequired()) {
 
-				    var value = this.value;
+					if (!this.isEmpty()) {
 
-				    if (input.isRequired()) {
+						if (!validation.IBAN(value))
+							input.addError(validation.errors.IBAN);
 
-					    if (!input.isEmpty()) {
+					}
 
-						    if (!validator.checkPersonalID(value))
-							    input.addError(validation.errors.personalID);
+				} else {
 
-					    }
+					if (!validator.IBAN(value))
+						input.addError(validation.errors.IBAN);
 
-				    } else {
+				}
 
-					    if (!validator.checkPersonalID(value))
-						    input.addError(validation.errors.personalID);
+			});
 
-				    }
+		};
 
-			    });
+		this.personalID = function (input) {
 
-		    };
+			input.on('blur', function () {
 
-		    this.zipCode = function (input) {
+				var value = this.value;
 
-			    input.on('blur', function () {
+				if (input.isRequired()) {
 
-				    var value = input.value;
+					if (!input.isEmpty()) {
 
-				    if (this.isRequired()) {
+						if (!validator.checkPersonalID(value))
+							input.addError(validation.errors.personalID);
 
-					    if (!this.isEmpty()) {
+					}
 
-						    if (!validation.checkZipCode(value))
-							    validator.addError(validation.errors.zipCode);
+				} else {
 
-					    }
+					if (!validator.checkPersonalID(value))
+						input.addError(validation.errors.personalID);
 
-				    } else {
+				}
 
-					    if (!validation.checkZipCode(value))
-						    validator.addError(validation.errors.zipCode);
+			});
 
-				    }
+		};
 
-			    });
+		this.zipCode = function (input) {
 
-		    };
+			input.on('blur', function () {
 
-		    this.form = function (form, options) {
+				var value = input.value;
 
-			    var formInputs = form.querySelectorAll('[ data-validation ]'),
+				if (this.isRequired()) {
 
-				    rule,
-				    ruleValue,
-				    input,
-				    validationRules,
+					if (!this.isEmpty()) {
 
-				    invalidInputs = [],
+						if (!validation.checkZipCode(value))
+							validator.addError(validation.errors.zipCode);
 
-				    addFormError = function (input, errorMessage) {
+					}
 
-					    invalidInputs.push([[input], errorMessage]);
+				} else {
 
-				    };
+					if (!validation.checkZipCode(value))
+						validator.addError(validation.errors.zipCode);
 
-			    for (var i = 0, vl = formInputs.length; i < vl; i++) {
+				}
 
-				    input = formInputs[i];
+			});
 
-				    validationRules = input.getAttribute('data-validation').split('|');
+		};
 
-				    for (var j = 0, rl = validationRules.length; j < rl; j++) {
+		this.form = function (form, options) {
 
-					    rule = validationRules[j].split(':')[0];
+			if (typeof form === 'string') {
 
-					    ruleValue = validationRules[j].split(':')[1];
+				var addFormError = function (input, errorMessage) {
 
-					    // Rules that are set in data-validation attr.
+						if (options && options.input) {
+							t.addError(input, errorMessage);
+						}
 
-					    switch (rule) {
+						invalidInputs.push([[input], errorMessage]);
 
-						    case 'required':
+					},
+					formInputs = document.querySelector(form).elements,
+					invalidInputs = [],
+					rule,
+					ruleValue,
+					input,
+					validationRules;
 
-							    if (input.isEmpty())
-								    addFormError(input, 'Field is required!');
+				if (formInputs.length > 0) {
 
-							    break;
+					for (var i = 0, vl = formInputs.length; i < vl; i++) {
 
-						    case 'url':
+						input = formInputs[i];
+						validationRules = input.getAttribute('data-validation').split('|');
 
-							    if (!input.isURL())
-								    addFormError(input, 'Required a valid URL as value!');
+						for (var j = 0, rl = validationRules.length; j < rl; j++) {
 
-							    break;
+							rule = validationRules[j].split(':')[0];
 
-						    case 'domain':
+							ruleValue = validationRules[j].split(':')[1];
 
-							    if (!input.isDomain())
-								    addFormError(input, 'Required a valid DOMAIN NAME as value!');
+							// Rules that are set in data-validation attr.
 
-							    break;
+							switch (rule) {
 
-						    case 'email':
+								case 'required':
 
-							    if (!input.isEmail())
-								    addFormError(input, 'Required a valid EMAIL as value!');
+									if (input.isEmpty())
+										addFormError(input, 'Field is required!');
 
-							    break;
+									break;
 
-						    case 'min':
+								case 'url':
 
-							    if (!input.hasMinChar())
-								    addFormError(input, 'Required MINIMUM-CHARACTER [ ' + ruleValue + ' ]!');
+									if (!input.isURL())
+										addFormError(input, 'Enter a valid URL!');
 
-							    break;
+									break;
 
-						    case 'min-num':
+								case 'domain':
 
-							    if (!input.hasMinNum())
-								    addFormError(input, 'Required MINIMUM-NUMBER [ ' + ruleValue + ' ]!');
+									if (!input.isDomain())
+										addFormError(input, 'Enter a valid Domain!');
 
-							    break;
+									break;
 
-						    case 'mobile':
+								case 'email':
 
-							    if (!input.isMobile())
-								    addFormError(input, 'Required a valid MOBILE number as value!');
+									if (!input.isEmail())
+										addFormError(input, 'Enter a valid Email!');
 
-							    break;
+									break;
 
-						    case 'phone':
+								case 'min':
 
-							    if (!input.isPhone())
-								    addFormError(input, 'Required a valid PHONE number as value!');
+									if (!input.hasMinChar())
+										addFormError(input, 'Minimum character [ ' + ruleValue + ' ]!');
 
-							    break;
+									break;
 
-						    case 'iban':
+								case 'min-num':
 
-							    if (!input.isIBAN())
-								    addFormError(input, 'Required a valid SHEBA-CODE (IBAN) as value!');
+									if (!input.hasMinNum())
+										addFormError(input, 'Maximum character [ ' + ruleValue + ' ]!');
 
-							    break;
+									break;
 
-						    case 'personal-id':
+								case 'mobile':
 
-							    if (!input.isPersonalID())
-								    addFormError(input, 'Required a valid PERSONAL-ID as value!');
+									if (!input.isMobile())
+										addFormError(input, 'Enter a valid Mobile number!');
 
-							    break;
+									break;
 
-						    case 'postal-code':
+								case 'phone':
 
-							    if (!input.isZipCode())
-								    addFormError(input, 'Required a valid POSTAL-CODE as value!');
+									if (!input.isPhone())
+										addFormError(input, 'Enter a valid Phone number!');
 
-							    break;
+									break;
 
-						    case 'default':
+								case 'iban':
 
-							    break;
+									if (!input.isIBAN())
+										addFormError(input, 'Enter a valid SHEBA Code (IBAN)!');
 
-					    }
+									break;
 
-				    }
+								case 'personal-id':
 
-			    }
+									if (!input.isPersonalID())
+										addFormError(input, 'Enter a valid Personal Id!');
 
-			    if (invalidInputs.length > 0) {
+									break;
 
-				    if (options.console) {
+								case 'postal-code':
 
-					    console.error('Validation.js: Form (" ' + ( form.id !== '' ? '#' + form.id : '.' + form.className ) + ' ") is not valid and you can not submit it! All required fields must fill out with an appropriate value! ');
+									if (!input.isZipCode())
+										addFormError(input, 'Enter a valid Postal Code!');
 
-					    for (var k = 0, kl = invalidInputs.length; k < kl; k++)
-						    console.error(invalidInputs[k][1], invalidInputs[k][0]);
+									break;
 
+								case 'default':
 
-				    } else {
+									break;
 
-					    return false;
+							}
 
-				    }
+						}
 
-			    } else {
+					}
 
-				    return true;
+					if (invalidInputs.length > 0) {
 
-			    }
+						if (options && options.console) {
 
-		    };
+							console.error('Validation.js: Form (" ' + (form) + ' ") elements are not valid! Please check values.');
 
-            // -- Init a new input
+							for (var k = 0, kl = invalidInputs.length; k < kl; k++) {
+								console.error(invalidInputs[k][1], invalidInputs[k][0]);
+							}
 
-		    this.init = function (options) {
+						} else {
 
-			    var inputs = !!options.input ? options.input : document.querySelectorAll('[data-validation]'),
-				    input,
-				    rules,
-				    rule,
-				    ruleValue;
+							return false;
 
-			    // Setting custom options
+						}
 
-			    if (options) {
+					} else {
 
-				    if (options.errors) {
+						return true;
+					}
 
-					    for (var i in options.errors)
-						    if (options.errors.hasOwnProperty(i) && validation.errors.hasOwnProperty(i))
-							    validation.errors[i] = options.errors[i];
+				}
 
-				    }
+			} else {
 
-				    if (options.styles) {
+				console.error('Form selector must be a string.');
+				return false;
 
-					    for (var j in options.styles)
-						    if (options.styles.hasOwnProperty(j) && validation.styles.hasOwnProperty(j))
-							    validation.styles[j] = options.styles[j];
+			}
+		};
 
-				    }
+		// -- Init a new input
 
-				    if (options.parentNode)
-					    validation.errors.parentNode = options.parentNode;
+		this.init = function (options) {
 
-			    }
+			var inputs = !!options.input ? options.input : document.querySelectorAll('[data-validation]'),
+				input,
+				rules,
+				rule,
+				ruleValue;
 
-			    // Initializing inputs
+			// Setting custom options
 
-			    for (var i = 0, l = inputs.length; i < l; i++) {
+			if (options) {
 
-				    input = inputs[i];
-				    rules = input.getAttribute('data-validation').split('|');
+				if (options.errors) {
 
-				    if (input.initialized) return;
+					for (var i in options.errors)
+						if (options.errors.hasOwnProperty(i) && validation.errors.hasOwnProperty(i))
+							validation.errors[i] = options.errors[i];
 
-				    input.on('focusin', function () {
-					    this.removeError();
-				    });
+				}
 
-				    for (var j = 0; j < rules.length; j++) {
+				if (options.styles) {
 
-					    rule = rules[j].split(':')[0];
-					    ruleValue = rules[j].split(':')[1];
+					for (var j in options.styles)
+						if (options.styles.hasOwnProperty(j) && validation.styles.hasOwnProperty(j))
+							validation.styles[j] = options.styles[j];
 
-					    switch (rule) {
+				}
 
-						    case 'required':
+				if (options.parentNode)
+					validation.errors.parentNode = options.parentNode;
 
-							    input.validation.required = true;
+			}
 
-							    validation.required(input);
+			// Initializing inputs
 
-							    break;
+			for (var i = 0, l = inputs.length; i < l; i++) {
 
-						    case 'email':
+				input = inputs[i];
+				rules = input.getAttribute('data-validation').split('|');
 
-							    input.validation.email = true;
+				if (input.initialized) return;
 
-							    validation.email(input);
+				input.on('focusin', function () {
+					this.removeError();
+				});
 
-							    break;
+				for (var j = 0; j < rules.length; j++) {
 
-						    case 'url':
+					rule = rules[j].split(':')[0];
+					ruleValue = rules[j].split(':')[1];
 
-							    input.validation.url = true;
+					switch (rule) {
 
-							    validation.url(input);
+						case 'required':
 
-							    break;
+							input.validation.required = true;
 
-						    case 'domain':
+							validation.required(input);
 
-							    input.validation.domain = true;
+							break;
 
-							    validation.domain(input);
+						case 'email':
 
-							    break;
+							input.validation.email = true;
 
-						    case 'number':
+							validation.email(input);
 
-							    input.validation.number = true;
+							break;
 
-							    validation.number(input, ruleValue);
+						case 'url':
 
-							    break;
+							input.validation.url = true;
 
-						    case 'alphabet':
+							validation.url(input);
 
-							    input.validation.alphabet = true;
+							break;
 
-							    validation.alphabet(input, ruleValue);
+						case 'domain':
 
-							    break;
+							input.validation.domain = true;
 
-						    case 'min':
+							validation.domain(input);
 
-							    input.validation.minChar = true;
+							break;
 
-							    validation.minCharacter(input, ruleValue);
+						case 'number':
 
-							    break;
+							input.validation.number = true;
 
-						    case 'max':
+							validation.number(input, ruleValue);
 
-							    input.validation.maxChar = true;
+							break;
 
-							    validation.maxCharacter(input, ruleValue);
+						case 'alphabet':
 
-							    break;
+							input.validation.alphabet = true;
 
-						    case 'min-num':
+							validation.alphabet(input, ruleValue);
 
-							    input.validation.minNum = true;
+							break;
 
-							    validation.minNumber(input, ruleValue);
+						case 'min':
 
-							    break;
+							input.validation.minChar = true;
 
-						    case 'max-num':
+							validation.minCharacter(input, ruleValue);
 
-							    input.validation.maxNum = true;
+							break;
 
-							    validation.maxNumber(input, ruleValue);
+						case 'max':
 
-							    break;
+							input.validation.maxChar = true;
 
-						    case 'mobile':
+							validation.maxCharacter(input, ruleValue);
 
-							    input.validation.mobile = true;
+							break;
 
-							    validation.mobile(input);
+						case 'min-num':
 
-							    break;
+							input.validation.minNum = true;
 
-						    case 'phone':
+							validation.minNumber(input, ruleValue);
 
-							    input.validation.phone = true;
+							break;
 
-							    validation.phone(input);
+						case 'max-num':
 
-							    break;
+							input.validation.maxNum = true;
 
-						    case 'iban':
+							validation.maxNumber(input, ruleValue);
 
-							    input.validation.iban = true;
+							break;
 
-							    validation.iban(input);
+						case 'mobile':
 
-							    break;
+							input.validation.mobile = true;
 
-						    case 'personal-id':
+							validation.mobile(input);
 
-							    input.validation.personalID = true;
+							break;
 
-							    validation.personalID(input);
+						case 'phone':
 
-							    break;
+							input.validation.phone = true;
 
-						    case 'zip-code':
+							validation.phone(input);
 
-							    input.validation.zipCode = true;
+							break;
 
-							    validation.zipCode(input);
+						case 'iban':
 
-							    break;
+							input.validation.iban = true;
 
-						    case 'default':
+							validation.iban(input);
 
-							    break;
+							break;
 
-					    }
+						case 'personal-id':
 
-					    input.initialized = true;
+							input.validation.personalID = true;
 
-				    }
+							validation.personalID(input);
 
-			    }
+							break;
 
-		    };
+						case 'zip-code':
 
-        };
+							input.validation.zipCode = true;
 
-    EventTarget.prototype.on = function (events, callback) {
+							validation.zipCode(input);
 
-        var eventsArray = events.split(' ');
+							break;
 
-        for (var i = 0, l = eventsArray.length; i < l; i++) {
+						case 'default':
 
-            if (this.addEventListener)
-                this.addEventListener(eventsArray[i], callback);
+							break;
 
-            else if (this.attachEvent)
-                this.attachEvent(eventsArray[i], callback);
+					}
 
-        }
+					input.initialized = true;
 
-    };
+				}
 
-    EventTarget.prototype.findParent = function (cn) {
+			}
 
-        var p = this.parentNode;
+		};
 
-        while ( p.className.indexOf(cn) < 0 ) {
+	};
 
-            p = p.parentNode;
+	// Event targets
 
-        }
+	EventTarget.prototype.on = function (events, callback) {
 
-        return p;
+		var eventsArray = events.split(' ');
 
-    };
+		for (var i = 0, l = eventsArray.length; i < l; i++) {
 
-    EventTarget.prototype.addError = function (error) {
+			if (this.addEventListener)
+				this.addEventListener(eventsArray[i], callback);
 
-        validation.addError(this, error);
+			else if (this.attachEvent)
+				this.attachEvent(eventsArray[i], callback);
 
-    };
+		}
 
-    EventTarget.prototype.removeError = function () {
+	};
 
-        validation.removeError(this);
+	EventTarget.prototype.findParent = function (cn) {
 
-    };
+		var p = this.parentNode;
 
-    EventTarget.prototype.isRequired = function () {
+		while (p.className.indexOf(cn) < 0) {
 
-        return validation.isRequired(this);
+			p = p.parentNode;
 
-    };
+		}
 
-    EventTarget.prototype.isEmpty = function () {
+		return p;
 
-        return validation.isEmpty(this);
+	};
 
-    };
+	EventTarget.prototype.addError = function (error) {
 
-    EventTarget.prototype.isEmail = function () {
+		validation.addError(this, error);
 
-        return validation.isEmail(this);
+	};
 
-    };
+	EventTarget.prototype.removeError = function () {
 
-    EventTarget.prototype.isURL = function () {
+		validation.removeError(this);
 
-        return validation.isURL(this);
+	};
 
-    };
+	EventTarget.prototype.isRequired = function () {
 
-    EventTarget.prototype.isDomain = function () {
+		return validation.isRequired(this);
 
-        return validation.isDomain(this);
+	};
 
-    };
+	EventTarget.prototype.isEmpty = function () {
 
-    EventTarget.prototype.isMobile = function () {
+		return validation.isEmpty(this);
 
-        return validation.mobile(this.value, true);
+	};
 
-    };
+	EventTarget.prototype.isEmail = function () {
 
-    EventTarget.prototype.isPhone = function () {
+		return validation.isEmail(this.value);
 
-        return validation.phone(this.value, true);
+	};
 
-    };
+	EventTarget.prototype.isURL = function () {
 
-    EventTarget.prototype.isIBAN = function () {
+		return validation.isURL(this.value);
 
-        return validation.iban(this.value);
+	};
 
-    };
+	EventTarget.prototype.isDomain = function () {
 
-    EventTarget.prototype.isPersonalID = function () {
+		return validation.isDomain(this.value);
 
-        return validation.isPersonalID(this.value);
+	};
 
-    };
+	EventTarget.prototype.isMobile = function () {
 
-    EventTarget.prototype.isZipCode = function () {
+		return validation.isMobile(this.value, true);
 
-        return validation.isZipCode(this.value);
+	};
 
-    };
+	EventTarget.prototype.isPhone = function () {
 
-    EventTarget.prototype.isValidForm = function (options) {
+		return validation.isPhone(this.value, true);
 
-        options = options !== undefined ? options : false;
+	};
 
-        if (this.tagName === 'FORM')
-            return validation.isValidForm(this, options);
+	EventTarget.prototype.isIBAN = function () {
 
-        else
-            throw new Error('.isValidForm() will only work on FORM Elements! not a ' + this.tagName + ' Element', [this]);
+		return validation.iban(this.value);
 
-    };
+	};
 
-    EventTarget.prototype.isPattern = function (pattern, reverse) {
+	EventTarget.prototype.isPersonalID = function () {
 
-        reverse = reverse !== undefined ? reverse : false;
+		return validation.isPersonalID(this.value);
 
-        return validation.isPattern(this.value, pattern, reverse);
+	};
 
-    };
+	EventTarget.prototype.isZipCode = function () {
 
-    EventTarget.prototype.hasMinChar = function () {
+		return validation.isZipCode(this.value);
 
-        return validation.hasMinChar(this);
+	};
 
-    };
+	EventTarget.prototype.isValidForm = function (options) {
 
-    EventTarget.prototype.hasMinNum = function () {
+		options = options !== undefined ? options : false;
 
-        return validation.hasMinNum(this);
+		if (this.tagName === 'FORM')
+			return validation.isValidForm(this, options);
 
-    };
+		else
+			throw new Error('.isValidForm() will only work on FORM Elements! not a ' + this.tagName + ' Element', [this]);
 
-    EventTarget.prototype.validation = function () {
+	};
 
-        initialize(this);
+	EventTarget.prototype.isPattern = function (pattern, reverse) {
 
-    };
+		reverse = reverse !== undefined ? reverse : false;
 
+		return validation.isPattern(this.value, pattern, reverse);
 
-    w.validation = new Validations();
+	};
+
+	EventTarget.prototype.hasMinChar = function () {
+
+		return validation.hasMinChar(this);
+
+	};
+
+	EventTarget.prototype.hasMinNum = function () {
+
+		return validation.hasMinNum(this);
+
+	};
+
+	EventTarget.prototype.validation = function () {
+
+		initialize(this);
+
+	};
+
+	w.validation = new Validations();
 
 })(window, document);
