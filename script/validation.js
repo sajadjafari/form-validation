@@ -188,7 +188,7 @@
 
                     minChar = minChar.match(/[0-9]+/)[0];
 
-                    return validations.checkMinCharacter(input, minChar, true);
+                    return validation.checkMinCharacter(input, minChar, true);
 
                 } else {
 
@@ -220,8 +220,8 @@
 
             this.returnFalseKeys = function (e) {
 
-                for (var i = 0, l = validations.codes.falseKeys.length; i < l; i++)
-                    if (e.keyCode === validations.codes.falseKeys[i])
+                for (var i = 0, l = validation.codes.falseKeys.length; i < l; i++)
+                    if (e.keyCode === validation.codes.falseKeys[i])
                         return true;
 
                 return false;
@@ -246,7 +246,7 @@
 
                         } else {
 
-                            input.addError(validations.errors.number);
+                            input.addError(validation.errors.number);
 
                         }
 
@@ -441,7 +441,7 @@
 
 		    this.removeError = function (input) {
 
-			    var _regexp = new RegExp('\\s*' + validations.errors.cn, 'g');
+			    var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
 
 			    input.parentElement.className = input.parentElement.className.replace(_regexp, '');
 
@@ -451,17 +451,17 @@
 
 		    this.addError = function (input, error) {
 
-			    var _regexp = new RegExp('\\s*' + validations.errors.cn, 'g');
-			    var parent = (validations.errors.parentNode !== '' ? input.findParent(validations.errors.parentNode) : input.parentElement );
+			    var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g');
+			    var parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement );
 
 			    if (!parent.className.match(_regexp)) {
 
-				    parent.className = parent.className + ' ' + validations.errors.cn;
+				    parent.className = parent.className + ' ' + validation.errors.cn;
 
 
 
 			    }
-			    parent.setAttribute(validations.errors.dError, error);
+			    parent.setAttribute(validation.errors.dError, error);
 		    };
 
 		    this.required = function (input) {
@@ -473,7 +473,7 @@
 				    value = input.value.trim();
 
 				    if (value === '' || value === null)
-					    t.addError(this, validations.errors.required);
+					    t.addError(this, validation.errors.required);
 
 			    })
 
@@ -483,7 +483,7 @@
 
 			    input.on('blur', function () {
 
-				    validations.pattern.check(this, validations.pattern.email, validations.errors.email);
+				    validation.pattern.check(this, validation.pattern.email, validation.errors.email);
 
 			    });
 
@@ -493,7 +493,7 @@
 
 			    input.on('blur', function () {
 
-				    validations.pattern.check(this, validations.pattern.url, validations.errors.url);
+				    validation.pattern.check(this, validation.pattern.url, validation.errors.url);
 
 			    });
 
@@ -503,7 +503,7 @@
 
 			    input.on('blur', function () {
 
-				    validations.pattern.check(this, validations.pattern.domain, validations.errors.domain);
+				    validation.pattern.check(this, validation.pattern.domain, validation.errors.domain);
 
 			    });
 
@@ -516,10 +516,10 @@
 			    input.on('keydown', function (e) {
 
 				    if (lang === 'EN')
-					    validations.translateDigit(e, this, validations.codes.enDigits);
+					    validation.translateDigit(e, this, validation.codes.enDigits);
 
 				    else if (lang === 'FA')
-					    validations.translateDigit(e, this, validations.codes.faDigits);
+					    validation.translateDigit(e, this, validation.codes.faDigits);
 
 			    });
 
@@ -537,17 +537,17 @@
 
 					    charCode = e.key.charCodeAt(0);
 
-					    if (validations.returnFalseKeys(e))
+					    if (validation.returnFalseKeys(e))
 						    return;
 
 					    if (e.ctrlKey)
 						    return;
 
 					    if (lang === 'EN')
-						    validations.checkCharacter(e, input, validations.codes.enAlpha, charCode, validations.errors.en);
+						    validation.checkCharacter(e, input, validation.codes.enAlpha, charCode, validation.errors.en);
 
 					    else if (lang === 'FA')
-						    validations.checkCharacter(e, input, validations.codes.faAlpha, charCode, validations.errors.fa);
+						    validation.checkCharacter(e, input, validation.codes.faAlpha, charCode, validation.errors.fa);
 
 				    }
 
@@ -560,10 +560,10 @@
 				    for (var i = 0, il = value.length; i < il; i++) {
 
 					    if (lang === 'EN')
-						    validations.checkCharacter(e, input, validations.codes.enAlpha, value[i].charCodeAt(0), validations.errors.en);
+						    validation.checkCharacter(e, input, validation.codes.enAlpha, value[i].charCodeAt(0), validation.errors.en);
 
 					    else if (lang === 'FA')
-						    validations.checkCharacter(e, input, validations.codes.faAlpha, value[i].charCodeAt(0), validations.errors.fa);
+						    validation.checkCharacter(e, input, validation.codes.faAlpha, value[i].charCodeAt(0), validation.errors.fa);
 
 				    }
 
@@ -577,17 +577,17 @@
 
 			    input.on('blur', function (e) {
 
-				    if (validations.returnFalseKeys(e) || e.ctrlKey)
+				    if (validation.returnFalseKeys(e) || e.ctrlKey)
 					    return;
 
 				    if (this.isRequired()) {
 
 					    if (!this.isEmpty())
-						    validations.checkMinCharacter(this, minChar);
+						    validation.checkMinCharacter(this, minChar);
 
 				    } else {
 
-					    validations.checkMinCharacter(this, minChar);
+					    validation.checkMinCharacter(this, minChar);
 
 				    }
 
@@ -604,14 +604,14 @@
 
 				    value = input.value.trim();
 
-				    if (validations.returnFalseKeys(e) || e.ctrlKey)
+				    if (validation.returnFalseKeys(e) || e.ctrlKey)
 					    return;
 
 				    if (value.length >= maxChar) {
 
 					    e.preventDefault();
 
-					    input.addError(validations.errors.maxChar[0] + ' ' + maxChar + ' ' + validations.errors.maxChar[1]);
+					    input.addError(validation.errors.maxChar[0] + ' ' + maxChar + ' ' + validation.errors.maxChar[1]);
 
 				    } else {
 
@@ -632,11 +632,11 @@
 				    if (this.isRequired()) {
 
 					    if (!this.isEmpty())
-						    validations.checkMinNum(this, minNum);
+						    validation.checkMinNum(this, minNum);
 
 				    } else {
 
-					    validations.checkMinNum(this, minNum);
+					    validation.checkMinNum(this, minNum);
 
 				    }
 
@@ -659,7 +659,7 @@
 
 				    input.on('keydown', function (e) {
 
-					    validations.translateDigit(e, this, validations.codes.enDigits);
+					    validation.translateDigit(e, this, validation.codes.enDigits);
 
 				    });
 
@@ -667,16 +667,16 @@
 
 			    input.on('keydown keyup', function (e) {
 
-				    value = validations.removeCommas(input.value);
+				    value = validation.removeCommas(input.value);
 
-				    if (validations.returnFalseKeys(e))
+				    if (validation.returnFalseKeys(e))
 					    return;
 
 				    if (value > maxNum) {
 
 					    e.preventDefault();
 
-					    input.addError(validations.errors.maxNum[0] + maxNum + validations.errors.minNum[1]);
+					    input.addError(validation.errors.maxNum[0] + maxNum + validation.errors.minNum[1]);
 
 					    input.value = input.value.substr(0, this.value.length - 1);
 
@@ -697,7 +697,7 @@
 
 			    input.on('blur', function () {
 
-				    validations.pattern.check(input, validations.pattern.mobile, validations.errors.mobile);
+				    validation.pattern.check(input, validation.pattern.mobile, validation.errors.mobile);
 
 			    });
 
@@ -707,7 +707,7 @@
 
 			    input.on('blur', function () {
 
-				    validations.pattern.check(input, validations.pattern.phone, validations.errors.phone);
+				    validation.pattern.check(input, validation.pattern.phone, validation.errors.phone);
 
 			    });
 
@@ -723,15 +723,15 @@
 
 					    if (!this.isEmpty()) {
 
-						    if (!validations.IBAN(value))
-							    input.addError(validations.errors.IBAN);
+						    if (!validation.IBAN(value))
+							    input.addError(validation.errors.IBAN);
 
 					    }
 
 				    } else {
 
 					    if (!validator.IBAN(value))
-						    input.addError(validations.errors.IBAN);
+						    input.addError(validation.errors.IBAN);
 
 				    }
 
@@ -751,14 +751,14 @@
 					    if (!input.isEmpty()) {
 
 						    if (!validator.checkPersonalID(value))
-							    input.addError(validations.errors.personalID);
+							    input.addError(validation.errors.personalID);
 
 					    }
 
 				    } else {
 
 					    if (!validator.checkPersonalID(value))
-						    input.addError(validations.errors.personalID);
+						    input.addError(validation.errors.personalID);
 
 				    }
 
@@ -776,15 +776,15 @@
 
 					    if (!this.isEmpty()) {
 
-						    if (!validations.checkZipCode(value))
-							    validator.addError(validations.errors.zipCode);
+						    if (!validation.checkZipCode(value))
+							    validator.addError(validation.errors.zipCode);
 
 					    }
 
 				    } else {
 
-					    if (!validations.checkZipCode(value))
-						    validator.addError(validations.errors.zipCode);
+					    if (!validation.checkZipCode(value))
+						    validator.addError(validation.errors.zipCode);
 
 				    }
 
@@ -938,13 +938,40 @@
 
             // -- Init a new input
 
-		    this.init = function (_input) {
+		    this.init = function (options) {
 
-			    var inputs = !!_input ? _input : document.querySelectorAll('[data-validation]'),
+			    var inputs = !!options.input ? options.input : document.querySelectorAll('[data-validation]'),
 				    input,
 				    rules,
 				    rule,
 				    ruleValue;
+
+			    // Setting custom options
+
+			    if (options) {
+
+				    if (options.errors) {
+
+					    for (var i in options.errors)
+						    if (options.errors.hasOwnProperty(i) && validation.errors.hasOwnProperty(i))
+							    validation.errors[i] = options.errors[i];
+
+				    }
+
+				    if (options.styles) {
+
+					    for (var j in options.styles)
+						    if (options.styles.hasOwnProperty(j) && validation.styles.hasOwnProperty(j))
+							    validation.styles[j] = options.styles[j];
+
+				    }
+
+				    if (options.parentNode)
+					    validation.errors.parentNode = options.parentNode;
+
+			    }
+
+			    // Initializing inputs
 
 			    for (var i = 0, l = inputs.length; i < l; i++) {
 
@@ -968,7 +995,7 @@
 
 							    input.validation.required = true;
 
-							    validator.required(input);
+							    validation.required(input);
 
 							    break;
 
@@ -976,7 +1003,7 @@
 
 							    input.validation.email = true;
 
-							    validator.email(input);
+							    validation.email(input);
 
 							    break;
 
@@ -984,7 +1011,7 @@
 
 							    input.validation.url = true;
 
-							    validator.url(input);
+							    validation.url(input);
 
 							    break;
 
@@ -992,7 +1019,7 @@
 
 							    input.validation.domain = true;
 
-							    validator.domain(input);
+							    validation.domain(input);
 
 							    break;
 
@@ -1000,7 +1027,7 @@
 
 							    input.validation.number = true;
 
-							    validator.number(input, ruleValue);
+							    validation.number(input, ruleValue);
 
 							    break;
 
@@ -1008,7 +1035,7 @@
 
 							    input.validation.alphabet = true;
 
-							    validator.alphabet(input, ruleValue);
+							    validation.alphabet(input, ruleValue);
 
 							    break;
 
@@ -1016,7 +1043,7 @@
 
 							    input.validation.minChar = true;
 
-							    validator.minCharacter(input, ruleValue);
+							    validation.minCharacter(input, ruleValue);
 
 							    break;
 
@@ -1024,7 +1051,7 @@
 
 							    input.validation.maxChar = true;
 
-							    validator.maxCharacter(input, ruleValue);
+							    validation.maxCharacter(input, ruleValue);
 
 							    break;
 
@@ -1032,7 +1059,7 @@
 
 							    input.validation.minNum = true;
 
-							    validator.minNumber(input, ruleValue);
+							    validation.minNumber(input, ruleValue);
 
 							    break;
 
@@ -1040,7 +1067,7 @@
 
 							    input.validation.maxNum = true;
 
-							    validator.maxNumber(input, ruleValue);
+							    validation.maxNumber(input, ruleValue);
 
 							    break;
 
@@ -1048,7 +1075,7 @@
 
 							    input.validation.mobile = true;
 
-							    validator.mobile(input);
+							    validation.mobile(input);
 
 							    break;
 
@@ -1056,7 +1083,7 @@
 
 							    input.validation.phone = true;
 
-							    validator.phone(input);
+							    validation.phone(input);
 
 							    break;
 
@@ -1064,7 +1091,7 @@
 
 							    input.validation.iban = true;
 
-							    validator.iban(input);
+							    validation.iban(input);
 
 							    break;
 
@@ -1072,7 +1099,7 @@
 
 							    input.validation.personalID = true;
 
-							    validator.personalID(input);
+							    validation.personalID(input);
 
 							    break;
 
@@ -1080,7 +1107,7 @@
 
 							    input.validation.zipCode = true;
 
-							    validator.zipCode(input);
+							    validation.zipCode(input);
 
 							    break;
 
@@ -1098,185 +1125,149 @@
 
 		    };
 
-        },
-
-        Validator = function () {},
-
-        validation = function (options) {
-
-            if (!options) return;
-
-            if (options.errors) {
-
-                for (var i in options.errors)
-                    if (options.errors.hasOwnProperty(i) && validations.errors.hasOwnProperty(i))
-                        validations.errors[i] = options.errors[i];
-
-            }
-
-            if (options.styles) {
-
-                for (var j in options.styles)
-                    if (options.styles.hasOwnProperty(j) && validations.styles.hasOwnProperty(j))
-                        validations.styles[j] = options.styles[j];
-
-            }
-
-            if (options.parentNode)
-                validations.errors.parentNode = options.parentNode;
-
-        },
-
-        validations = new Validations();
-
-        // validator = new Validator();
-
-    !(function () {
-
-        EventTarget.prototype.on = function (events, callback) {
-
-            var eventsArray = events.split(' ');
-
-            for (var i = 0, l = eventsArray.length; i < l; i++) {
-
-                if (this.addEventListener)
-                    this.addEventListener(eventsArray[i], callback);
-
-                else if (this.attachEvent)
-                    this.attachEvent(eventsArray[i], callback);
-
-            }
-
         };
 
-        EventTarget.prototype.findParent = function (cn) {
+    EventTarget.prototype.on = function (events, callback) {
 
-            var p = this.parentNode;
+        var eventsArray = events.split(' ');
 
-            while ( p.className.indexOf(cn) < 0 ) {
+        for (var i = 0, l = eventsArray.length; i < l; i++) {
 
-                p = p.parentNode;
+            if (this.addEventListener)
+                this.addEventListener(eventsArray[i], callback);
 
-            }
+            else if (this.attachEvent)
+                this.attachEvent(eventsArray[i], callback);
 
-            return p;
+        }
 
-        };
+    };
 
-        EventTarget.prototype.addError = function (error) {
+    EventTarget.prototype.findParent = function (cn) {
 
-            validator.addError(this, error);
+        var p = this.parentNode;
 
-        };
+        while ( p.className.indexOf(cn) < 0 ) {
 
-        EventTarget.prototype.removeError = function () {
+            p = p.parentNode;
 
-            validator.removeError(this);
+        }
 
-        };
+        return p;
 
-        EventTarget.prototype.isRequired = function () {
+    };
 
-            return validations.isRequired(this);
+    EventTarget.prototype.addError = function (error) {
 
-        };
+        validation.addError(this, error);
 
-        EventTarget.prototype.isEmpty = function () {
+    };
 
-            return validations.isEmpty(this);
+    EventTarget.prototype.removeError = function () {
 
-        };
+        validation.removeError(this);
 
-        EventTarget.prototype.isEmail = function () {
+    };
 
-            return validations.isEmail(this);
+    EventTarget.prototype.isRequired = function () {
 
-        };
+        return validation.isRequired(this);
 
-        EventTarget.prototype.isURL = function () {
+    };
 
-            return validations.isURL(this);
+    EventTarget.prototype.isEmpty = function () {
 
-        };
+        return validation.isEmpty(this);
 
-        EventTarget.prototype.isDomain = function () {
+    };
 
-            return validations.isDomain(this);
+    EventTarget.prototype.isEmail = function () {
 
-        };
+        return validation.isEmail(this);
 
-        EventTarget.prototype.isMobile = function () {
+    };
 
-            return validations.mobile(this.value, true);
+    EventTarget.prototype.isURL = function () {
 
-        };
+        return validation.isURL(this);
 
-        EventTarget.prototype.isPhone = function () {
+    };
 
-            return validations.phone(this.value, true);
+    EventTarget.prototype.isDomain = function () {
 
-        };
+        return validation.isDomain(this);
 
-        EventTarget.prototype.isIBAN = function () {
+    };
 
-            return validations.iban(this.value);
+    EventTarget.prototype.isMobile = function () {
 
-        };
+        return validation.mobile(this.value, true);
 
-        EventTarget.prototype.isPersonalID = function () {
+    };
 
-            return validations.isPersonalID(this.value);
+    EventTarget.prototype.isPhone = function () {
 
-        };
+        return validation.phone(this.value, true);
 
-        EventTarget.prototype.isZipCode = function () {
+    };
 
-            return validations.isZipCode(this.value);
+    EventTarget.prototype.isIBAN = function () {
 
-        };
+        return validation.iban(this.value);
 
-        EventTarget.prototype.isValidForm = function (options) {
+    };
 
-            options = options !== undefined ? options : false;
+    EventTarget.prototype.isPersonalID = function () {
 
-            if (this.tagName === 'FORM')
-                return validations.isValidForm(this, options);
+        return validation.isPersonalID(this.value);
 
-            else
-                throw new Error('.isValidForm() will only work on FORM Elements! not a ' + this.tagName + ' Element', [this]);
+    };
 
-        };
+    EventTarget.prototype.isZipCode = function () {
 
-        EventTarget.prototype.isPattern = function (pattern, reverse) {
+        return validation.isZipCode(this.value);
 
-            reverse = reverse !== undefined ? reverse : false;
+    };
 
-            return validations.isPattern(this.value, pattern, reverse);
+    EventTarget.prototype.isValidForm = function (options) {
 
-        };
+        options = options !== undefined ? options : false;
 
-        EventTarget.prototype.hasMinChar = function () {
+        if (this.tagName === 'FORM')
+            return validation.isValidForm(this, options);
 
-            return validations.hasMinChar(this);
+        else
+            throw new Error('.isValidForm() will only work on FORM Elements! not a ' + this.tagName + ' Element', [this]);
 
-        };
+    };
 
-        EventTarget.prototype.hasMinNum = function () {
+    EventTarget.prototype.isPattern = function (pattern, reverse) {
 
-            return validations.hasMinNum(this);
+        reverse = reverse !== undefined ? reverse : false;
 
-        };
+        return validation.isPattern(this.value, pattern, reverse);
 
-        EventTarget.prototype.validation = function () {
+    };
 
-            initialize(this);
+    EventTarget.prototype.hasMinChar = function () {
 
-        };
+        return validation.hasMinChar(this);
 
-    })();
+    };
 
-    initialize();
+    EventTarget.prototype.hasMinNum = function () {
 
-    w.validation = validation;
+        return validation.hasMinNum(this);
+
+    };
+
+    EventTarget.prototype.validation = function () {
+
+        initialize(this);
+
+    };
+
+
+    w.validation = new Validations();
 
 })(window, document);
