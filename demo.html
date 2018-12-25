@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Javascript Validation</title>
+    <meta name="keywords" content="Javascript Validation">
+    <meta name="author" content="Sajad jafari">
+    <meta name="email" content="me@sajadjafari.com">
+    <link href="https://fonts.googleapis.com/css?family=Playball|Raleway:300,400|Titillium+Web" rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+<section class="view">
+
+    <div class="view-inner">
+
+        <h1 class="title">Javascript Validation</h1>
+
+        <div class="input-group">
+            <label for="input1">Input [required]</label>
+            <div class="input-row">
+                <input type="text" id="input1" class="input" data-validation="required">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input2">Input [required|email]</label>
+            <div class="input-row">
+                <input type="text" id="input2" class="input" data-validation="required|email">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input3">Input [required|url]</label>
+            <div class="input-row">
+                <input type="text" id="input3" class="input" data-validation="required|url">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input4">Input [required|domain]</label>
+            <div class="input-row">
+                <input type="text" id="input4" class="input" data-validation="required|domain">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input5">Input [required|number:en]</label>
+            <div class="input-row">
+                <input type="text" id="input5" class="input" data-validation="required|number:en">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input6">Input [required|number:fa]</label>
+            <div class="input-row">
+                <input type="text" id="input6" class="input" data-validation="required|number:fa">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input7">Input [required|phone]</label>
+            <div class="input-row">
+                <input type="text" id="input7" class="input" data-validation="required|phone">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input8">Input [required|mobile]</label>
+            <div class="input-row">
+                <input type="text" id="input8" class="input" data-validation="required|mobile">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input9">Input [required|alphabet:en]</label>
+            <div class="input-row">
+                <input type="text" id="input9" class="input" data-validation="required|alphabet:en">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input10">Input [required|alphabet:fa]</label>
+            <div class="input-row">
+                <input type="text" id="input10" class="input" data-validation="required|alphabet:fa">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="input10">Input [min:10|max:20]</label>
+            <div class="input-row">
+                <input type="text" id="input11" class="input" data-validation="required|min:10|max:15">
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="script/validation-updated.js"></script>
+<!-- <script type="text/javascript" src="script/validation.js"></script> -->
+<script type="text/javascript">
+
+    validation({
+
+        // Define parent class name that you want add error into it.
+        parentNode: 'input-row',
+
+        style: {
+            background:"#fff"
+        },
+
+        errors: {
+            required: 'This field is required (custom)',
+            email: 'Enter a valid Email (custom)',
+            mobile: 'Enter a valid Mobile number (custom)'
+        }
+    });
+
+</script>
+</body>
+</html>
