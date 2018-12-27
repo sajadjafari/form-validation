@@ -92,32 +92,31 @@
             </div>
         </div>
 
-
         <div class="input-group">
-            <label for="input8">Input [required|min-num:10]</label>
+            <label for="input8">Input [required|min-num:10|max-num:20]</label>
             <div class="input-row">
-                <input type="text" id="input12" class="input" data-validation="required|min-num:10">
+                <input type="text" id="input12" class="input" data-validation="required|min-num:10|max-num:20">
             </div>
         </div>
 
         <div class="input-group">
             <label for="input9">Input [required|alphabet:en]</label>
             <div class="input-row">
-                <input type="text" id="input90" class="input" data-validation="required|alphabet:en">
+                <input type="text" id="input13" class="input" data-validation="required|alphabet:en">
             </div>
         </div>
 
         <div class="input-group">
             <label for="input10">Input [required|alphabet:fa]</label>
             <div class="input-row">
-                <input type="text" id="input100" class="input" data-validation="required|alphabet:fa">
+                <input type="text" id="input14" class="input" data-validation="required|alphabet:fa">
             </div>
         </div>
 
         <div class="input-group">
             <label for="input10">Input [min:10|max:20]</label>
             <div class="input-row">
-                <input type="text" id="input110" class="input" data-validation="required|min:10|max:15">
+                <input type="text" id="input15" class="input" data-validation="required|min:10|max:15">
             </div>
         </div>
 
@@ -145,6 +144,26 @@
             <label for="input1">Password [required]</label>
             <div class="input-row">
                 <input type="password" id="pass" class="input" data-validation="required">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <span>Input checkbox [required]</span>
+            <div class="input-row">
+                <div class="input-checkbox" data-validation="checkbox:2">
+                    <label class="checkbox" for="checkOne">
+                        <input type="checkbox" name="check[]" id="checkOne" style="display: inline-block; margin-top: 3px">
+                        Check One
+                    </label>
+                    <label class="checkbox" for="checkTwo">
+                        <input type="checkbox" name="check[]" id="checkTwo" style="display: inline-block; margin-top: 3px">
+                        Check Two
+                    </label>
+                    <label class="checkbox" for="checkThree">
+                        <input type="checkbox" name="check[]" id="checkThree" style="display: inline-block; margin-top: 3px">
+                        Check Three
+                    </label>
+                </div>
             </div>
         </div>
 

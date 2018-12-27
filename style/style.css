@@ -61,6 +61,20 @@ input {
     width: 100%;
 }
 
+.checkbox {
+    position: relative;
+    padding-left: 25px;
+    width: 100%;
+    display: block;
+    margin: 10px;
+}
+
+.checkbox input {
+    position: absolute;
+    left: 0;
+    top: 4px;
+}
+
 /*
 .input-row.input-error:before {
     content: attr(data-error);

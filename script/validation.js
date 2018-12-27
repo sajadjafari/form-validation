@@ -62,8 +62,9 @@
 			fa: 'Please enter in Persian',
 			minChar: ['You can enter minimum', 'characters!'],
 			maxChar: ['You can enter maximum', 'characters!'],
-			minNum: ['You must enter a number grater than', '.'],
-			maxNum: ['You must enter a number lower than', '.']
+			minNum: ['You must enter a number grater than', ''],
+			maxNum: ['You must enter a number lower than', ''],
+			checkbox: ['Required, Please check at least', 'items.'],
 
 		};
 
@@ -289,7 +290,7 @@
 
 				minChar = minChar.match(/[0-9]+/)[0];
 
-				return checkMinNum($this, minChar, true);
+				return t.checkMinNum($this, minChar, true);
 
 			} else {
 
@@ -666,11 +667,11 @@
 				if (input.isRequired()) {
 
 					if (!input.isEmpty())
-						validation.checkMinNum(this, min);
+						t.checkMinNum(this, min);
 
 				} else {
 
-					validation.checkMinNum(this, min);
+					t.checkMinNum(this, min);
 
 				}
 
@@ -710,7 +711,7 @@
 
 					e.preventDefault();
 
-					input.addError(validation.errors.maxNum[0] + maxNum + validation.errors.minNum[1]);
+					input.addError(validation.errors.maxNum[0] + ' ' + maxNum + ' ' + validation.errors.minNum[1]);
 
 					input.value = input.value.substr(0, this.value.length - 1);
 
@@ -720,8 +721,8 @@
 
 			input.on('blur input', function () {
 
-				if (!hasAnotherError)
-					input.removeError();
+				// if (!hasAnotherError)
+				input.removeError();
 
 			});
 
@@ -749,27 +750,35 @@
 
 		this.iban = function (input) {
 
-			input.on('blur', function () {
+			if (typeof input === 'string') {
 
-				var value = this.value = this.value.trim().replace(/\s/g, '');
+				return validation.isIBAN(input);
 
-				if (input.isRequired()) {
+			} else if (typeof input === 'object') {
 
-					if (!input.isEmpty()) {
+				input.on('blur', function () {
+
+					var value = this.value = this.value.trim().replace(/\s/g, '');
+
+					if (input.isRequired()) {
+
+						if (!input.isEmpty()) {
+
+							if (!validation.isIBAN(value))
+								input.addError(validation.errors.IBAN);
+
+						}
+
+					} else {
 
 						if (!validation.isIBAN(value))
 							input.addError(validation.errors.IBAN);
 
 					}
 
-				} else {
+				});
 
-					if (!validation.isIBAN(value))
-						input.addError(validation.errors.IBAN);
-
-				}
-
-			});
+			}
 
 		};
 
@@ -821,6 +830,36 @@
 
 		};
 
+		// checkbox validation
+
+		this.checkbox = function (input, required) {
+
+			var inputs = input.querySelectorAll('[type="checkbox"]'),
+				valid = 0;
+
+			this.removeError(input);
+
+			required = ((!Number.isNaN(required) || required !== undefined || required !== '') ? Number(required) : 1);
+
+			for (var i = 0, l = inputs.length; i < l; i++) {
+
+				if (inputs[i].checked) {
+
+					valid = valid + 1;
+
+					if (valid >= Number(required))
+						return true;
+
+				}
+
+			}
+
+			this.addError(input, validation.errors.checkbox[0] + ' ' + (required ? required : 1) + ' ' + validation.errors.checkbox[1]);
+
+			return false;
+
+		};
+
 		// -- Form validator
 
 		this.form = function (form, options) {
@@ -836,7 +875,8 @@
 						invalidInputs.push([[input], errorMessage]);
 
 					},
-					formInputs = document.querySelector(form).elements,
+					//formInputs = document.querySelector(form).elements,
+					formInputs = document.querySelector(form).querySelectorAll('[data-validation]'),
 					invalidInputs = [],
 					rule,
 					ruleValue,
@@ -849,7 +889,7 @@
 
 						input = formInputs[i];
 
-						if (!input.hasAttribute('data-validation')) //|| !input.initialized
+						if (!input.hasAttribute('data-validation'))
 							continue;
 
 						validationRules = input.getAttribute('data-validation').split('|');
@@ -941,6 +981,13 @@
 
 									break;
 
+								case 'checkbox':
+
+									if (!validation.checkbox(input, ruleValue))
+										addFormError(input, 'Select some, required ' + ruleValue);
+
+									break;
+
 								case 'default':
 
 									break;
@@ -981,6 +1028,35 @@
 			}
 		};
 
+		// Input validations attribute
+
+		this.addValidationAttr = function (input, validation, valid) {
+
+			if (!input.validations) {
+				input.validations = {};
+			}
+
+			input.validations[validation] = valid;
+
+			/*input.validations = {
+				required: false,
+				email: false,
+				url: false,
+				domain: false,
+				number: false,
+				alphabet: false,
+				min: false,
+				max: false,
+				minNum: false,
+				maxNum: false,
+				mobile: false,
+				phone: false,
+				iban: false,
+				personalID: false,
+				zipCode: false,
+			}*/
+		};
+
 		// -- Init a new input
 
 		this.init = function (options) {
@@ -1014,14 +1090,18 @@
 
 				input = inputs[i];
 
-				if (!input.hasAttribute('data-validation') || input.initialized)
+				if (!input.hasAttribute('data-validation') || (input.validations && input.validations.initialized))
 					continue;
 
 				rules = input.getAttribute('data-validation').split('|');
 
-				input.on('focusin', function () {
-					this.removeError();
-				});
+				if (input.tagName === 'INPUT') {
+
+					input.on('focusin', function () {
+						this.removeError();
+					});
+
+				}
 
 				for (var j = 0; j < rules.length; j++) {
 
@@ -1032,7 +1112,7 @@
 
 						case 'required':
 
-							input.validation.required = true;
+							this.addValidationAttr(input, 'required', true);
 
 							validation.required(input);
 
@@ -1040,7 +1120,7 @@
 
 						case 'email':
 
-							input.validation.email = true;
+							this.addValidationAttr(input, 'email', true);
 
 							validation.email(input);
 
@@ -1048,7 +1128,7 @@
 
 						case 'url':
 
-							input.validation.url = true;
+							this.addValidationAttr(input, 'url', true);
 
 							validation.url(input);
 
@@ -1056,7 +1136,7 @@
 
 						case 'domain':
 
-							input.validation.domain = true;
+							this.addValidationAttr(input, 'domain', true);
 
 							validation.domain(input);
 
@@ -1064,7 +1144,7 @@
 
 						case 'number':
 
-							input.validation.number = true;
+							this.addValidationAttr(input, 'number', true);
 
 							validation.number(input, ruleValue);
 
@@ -1072,7 +1152,7 @@
 
 						case 'alphabet':
 
-							input.validation.alphabet = true;
+							this.addValidationAttr(input, 'alphabet', true);
 
 							validation.alphabet(input, ruleValue);
 
@@ -1080,7 +1160,7 @@
 
 						case 'min':
 
-							input.validation.minChar = true;
+							this.addValidationAttr(input, 'min', true);
 
 							validation.minCharacter(input, ruleValue);
 
@@ -1088,7 +1168,7 @@
 
 						case 'max':
 
-							input.validation.maxChar = true;
+							this.addValidationAttr(input, 'max', true);
 
 							validation.maxCharacter(input, ruleValue);
 
@@ -1096,7 +1176,7 @@
 
 						case 'min-num':
 
-							input.validation.minNum = true;
+							this.addValidationAttr(input, 'min-num', true);
 
 							validation.minNumber(input, ruleValue);
 
@@ -1104,7 +1184,7 @@
 
 						case 'max-num':
 
-							input.validation.maxNum = true;
+							this.addValidationAttr(input, 'max-num', true);
 
 							validation.maxNumber(input, ruleValue);
 
@@ -1112,7 +1192,7 @@
 
 						case 'mobile':
 
-							input.validation.mobile = true;
+							this.addValidationAttr(input, 'mobile', true);
 
 							validation.mobile(input);
 
@@ -1120,7 +1200,7 @@
 
 						case 'phone':
 
-							input.validation.phone = true;
+							this.addValidationAttr(input, 'phone', true);
 
 							validation.phone(input);
 
@@ -1128,7 +1208,7 @@
 
 						case 'iban':
 
-							input.validation.iban = true;
+							this.addValidationAttr(input, 'iban', true);
 
 							validation.iban(input);
 
@@ -1136,7 +1216,7 @@
 
 						case 'personal-id':
 
-							input.validation.personalID = true;
+							this.addValidationAttr(input, 'personalID', true);
 
 							validation.personalID(input);
 
@@ -1144,7 +1224,7 @@
 
 						case 'zip-code':
 
-							input.validation.zipCode = true;
+							this.addValidationAttr(input, 'zipCode', true);
 
 							validation.zipCode(input);
 
@@ -1156,7 +1236,7 @@
 
 					}
 
-					input.initialized = true;
+					this.addValidationAttr(input, 'initialized', true);
 
 				}
 
@@ -1301,7 +1381,7 @@
 
 	};
 
-	EventTarget.prototype.validation = function () {
+	EventTarget.prototype.validatte = function () {
 
 		validation.init({input: this});
 
