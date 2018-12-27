@@ -65,6 +65,7 @@
 			minNum: ['You must enter a number grater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
 			checkbox: ['Required, Please check at least', 'items.'],
+			radio: 'Required, Please select an item',
 
 		};
 
@@ -837,7 +838,7 @@
 			var inputs = input.querySelectorAll('[type="checkbox"]'),
 				valid = 0;
 
-			this.removeError(input);
+			// this.removeError(input);
 
 			required = ((!Number.isNaN(required) || required !== undefined || required !== '') ? Number(required) : 1);
 
@@ -854,9 +855,43 @@
 
 			}
 
-			this.addError(input, validation.errors.checkbox[0] + ' ' + (required ? required : 1) + ' ' + validation.errors.checkbox[1]);
+			// this.addError(input, validation.errors.checkbox[0] + ' ' + (required ? required : 1) + ' ' + validation.errors.checkbox[1]);
 
 			return false;
+
+		};
+
+		// radio validation
+
+		this.radio = function (input) {
+
+			var inputs = input.querySelectorAll('[type="radio"]'),
+				valid = 0;
+
+			// this.removeError(input);
+
+			for (var i = 0, l = inputs.length; i < l; i++) {
+
+				if (inputs[i].checked)
+					return true;
+
+			}
+
+			// this.addError(input, validation.errors.radio);
+
+			return false;
+
+		};
+
+		// Input validations attribute
+
+		this.addValidationAttr = function (input, validation, valid) {
+
+			if (!input.validations) {
+				input.validations = {};
+			}
+
+			input.validations[validation] = valid;
 
 		};
 
@@ -875,7 +910,6 @@
 						invalidInputs.push([[input], errorMessage]);
 
 					},
-					//formInputs = document.querySelector(form).elements,
 					formInputs = document.querySelector(form).querySelectorAll('[data-validation]'),
 					invalidInputs = [],
 					rule,
@@ -984,7 +1018,14 @@
 								case 'checkbox':
 
 									if (!validation.checkbox(input, ruleValue))
-										addFormError(input, 'Select some, required ' + ruleValue);
+										addFormError(input, 'Required, select at least ' + ruleValue + ' items');
+
+									break;
+
+								case 'radio':
+
+									if (!validation.radio(input, ruleValue))
+										addFormError(input, 'Required');
 
 									break;
 
@@ -1026,35 +1067,6 @@
 				return false;
 
 			}
-		};
-
-		// Input validations attribute
-
-		this.addValidationAttr = function (input, validation, valid) {
-
-			if (!input.validations) {
-				input.validations = {};
-			}
-
-			input.validations[validation] = valid;
-
-			/*input.validations = {
-				required: false,
-				email: false,
-				url: false,
-				domain: false,
-				number: false,
-				alphabet: false,
-				min: false,
-				max: false,
-				minNum: false,
-				maxNum: false,
-				mobile: false,
-				phone: false,
-				iban: false,
-				personalID: false,
-				zipCode: false,
-			}*/
 		};
 
 		// -- Init a new input
