@@ -65,7 +65,7 @@
 			minNum: ['You must enter a number grater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
 			checkbox: ['Required, Please check at least', 'items.'],
-			radio: 'Required, Please select an item',
+			radio: 'Required, Please select an item'
 
 		};
 
@@ -883,6 +883,73 @@
 
 		};
 
+		// input file
+
+		this.fileSize = function (file, min, max) {
+
+			if (file && file.size) {
+				return (file.size >= (min || 1) && (max && file.size <= max));
+			}
+
+		};
+
+		this.fileType = function (file, types) {
+
+			var type = file.name.substr(file.name.lastIndexOf('.') + 1);
+
+			return (types.indexOf(type) !== -1);
+
+		};
+
+		this.isFile = function (input) {
+
+			var types = input.getAttribute('data-types'),
+				sizeMin = input.getAttribute('data-size-min'),
+				sizeMax = input.getAttribute('data-size-max'),
+				validateFile = function (file) {
+
+					if (types) {
+						type = t.fileType(file, types);
+					}
+
+					if (sizeMax) {
+						size = t.fileSize(file, sizeMin, sizeMax)
+					}
+
+					return type && size;
+
+				},
+				type = true,
+				size = type;
+
+			if (input.files.length) {
+
+				for (var i = 0, l = input.files.length; i < l; i++) {
+					if (!validateFile(input.files[i])) {
+						return false;
+					}
+				}
+
+				return true;
+
+			}
+
+		};
+
+		this.file = function (input) {
+
+			input.on('change', function () {
+
+				if (!t.isFile(this)) {
+					input.addError('File is not valid!');
+				}
+
+				console.log('files are ' + (t.isFile(this) ? '' : 'not') + ' valid', this.files)
+
+			})
+
+		};
+
 		// Input validations attribute
 
 		this.addValidationAttr = function (input, validation, valid) {
@@ -1018,14 +1085,22 @@
 								case 'checkbox':
 
 									if (!validation.checkbox(input, ruleValue))
-										addFormError(input, 'Required, select at least ' + ruleValue + ' items');
+										addFormError(input, 'Required, select at least ' + ruleValue + ' items!');
 
 									break;
 
 								case 'radio':
 
 									if (!validation.radio(input, ruleValue))
-										addFormError(input, 'Required');
+										addFormError(input, 'Required!');
+
+									break;
+
+
+								case 'file':
+
+									if (!validation.isFile(input))
+										addFormError(input, 'File is not valid!');
 
 									break;
 
@@ -1242,6 +1317,14 @@
 
 							break;
 
+						case 'file':
+
+							this.addValidationAttr(input, 'file', true);
+
+							validation.file(input);
+
+							break;
+
 						case 'default':
 
 							break;
@@ -1390,6 +1473,12 @@
 	EventTarget.prototype.hasMinNum = function () {
 
 		return validation.hasMinNum(this);
+
+	};
+
+	EventTarget.prototype.isFile = function () {
+
+		return validation.isFile(this);
 
 	};
 
