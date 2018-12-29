@@ -191,7 +191,7 @@
 			var tagName = input.tagName.toLocaleLowerCase(),
 				type = input.type;
 
-			if (tagName === 'input' && type !== 'file') {
+			if ((tagName === 'input' || tagName === 'select') && type !== 'file') {
 
 				input.on('focusin', function () {
 					input.removeError();
