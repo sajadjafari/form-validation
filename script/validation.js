@@ -132,8 +132,8 @@
 
 		this.removeError = function (input) {
 
-			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g'),
-				parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement),
+			var _regexp = new RegExp('\\s*' + v.errors.cn, 'g'),
+				parent = (v.errors.parentNode !== '' ? input.findParent(v.errors.parentNode) : input.parentElement),
 				errors = parent.querySelectorAll('.error');
 
 			parent.className = parent.className.replace(_regexp, '');
@@ -149,14 +149,14 @@
 
 		this.addError = function (input, error) {
 
-			var _regexp = new RegExp('\\s*' + validation.errors.cn, 'g'),
-				parent = (validation.errors.parentNode !== '' ? input.findParent(validation.errors.parentNode) : input.parentElement),
+			var _regexp = new RegExp('\\s*' + v.errors.cn, 'g'),
+				parent = (v.errors.parentNode !== '' ? input.findParent(v.errors.parentNode) : input.parentElement),
 				errors = parent.querySelectorAll('.error');
 
 			if (!parent.className.match(_regexp)) {
-				parent.className = parent.className + ' ' + validation.errors.cn;
+				parent.className = parent.className + ' ' + v.errors.cn;
 			}
-			parent.setAttribute(validation.errors.dError, error);
+			parent.setAttribute(v.errors.dError, error);
 
 			// append error span
 
@@ -234,13 +234,13 @@
 
 		this.isPhone = function (value) {
 
-			return validation.pattern.checkValue(value, validation.pattern.phone);
+			return v.pattern.checkValue(value, v.pattern.phone);
 
 		};
 
 		this.isMobile = function (value) {
 
-			return validation.pattern.checkValue(value, validation.pattern.mobile);
+			return v.pattern.checkValue(value, v.pattern.mobile);
 
 		};
 
@@ -272,7 +272,7 @@
 
 				minChar = minChar.match(/[0-9]+/)[0];
 
-				return validation.checkMinCharacter(input, minChar, true);
+				return v.checkMinCharacter(input, minChar, true);
 
 			} else {
 
@@ -304,8 +304,8 @@
 
 		this.returnFalseKeys = function (e) {
 
-			for (var i = 0, l = validation.codes.falseKeys.length; i < l; i++)
-				if (e.keyCode === validation.codes.falseKeys[i])
+			for (var i = 0, l = v.codes.falseKeys.length; i < l; i++)
+				if (e.keyCode === v.codes.falseKeys[i])
 					return true;
 
 			return false;
@@ -330,7 +330,7 @@
 
 					} else {
 
-						input.addError(validation.errors.number);
+						input.addError(v.errors.number);
 
 					}
 
@@ -511,7 +511,7 @@
 				var value = input.value.trim();
 
 				if (value === '' || value === null) {
-					v.addError(this, validation.errors.required);
+					v.addError(this, v.errors.required);
 				}
 
 			})
@@ -522,7 +522,7 @@
 
 			input.on('blur', function () {
 
-				validation.pattern.check(this, validation.pattern.email, validation.errors.email);
+				v.pattern.check(this, v.pattern.email, v.errors.email);
 
 			});
 
@@ -532,7 +532,7 @@
 
 			input.on('blur', function () {
 
-				validation.pattern.check(this, validation.pattern.url, validation.errors.url);
+				v.pattern.check(this, v.pattern.url, v.errors.url);
 
 			});
 
@@ -542,7 +542,7 @@
 
 			input.on('blur', function () {
 
-				validation.pattern.check(this, validation.pattern.domain, validation.errors.domain);
+				v.pattern.check(this, v.pattern.domain, v.errors.domain);
 
 			});
 
@@ -555,10 +555,10 @@
 			input.on('keydown', function (e) {
 
 				if (lang === 'EN')
-					validation.translateDigit(e, this, validation.codes.enDigits);
+					v.translateDigit(e, this, v.codes.enDigits);
 
 				else if (lang === 'FA')
-					validation.translateDigit(e, this, validation.codes.faDigits);
+					v.translateDigit(e, this, v.codes.faDigits);
 
 			});
 
@@ -576,17 +576,17 @@
 
 					charCode = e.key.charCodeAt(0);
 
-					if (validation.returnFalseKeys(e))
+					if (v.returnFalseKeys(e))
 						return;
 
 					if (e.ctrlKey)
 						return;
 
 					if (lang === 'EN')
-						validation.checkCharacter(e, input, validation.codes.enAlpha, charCode, validation.errors.en);
+						v.checkCharacter(e, input, v.codes.enAlpha, charCode, v.errors.en);
 
 					else if (lang === 'FA')
-						validation.checkCharacter(e, input, validation.codes.faAlpha, charCode, validation.errors.fa);
+						v.checkCharacter(e, input, v.codes.faAlpha, charCode, v.errors.fa);
 
 				}
 
@@ -599,10 +599,10 @@
 				for (var i = 0, il = value.length; i < il; i++) {
 
 					if (lang === 'EN')
-						validation.checkCharacter(e, input, validation.codes.enAlpha, value[i].charCodeAt(0), validation.errors.en);
+						v.checkCharacter(e, input, v.codes.enAlpha, value[i].charCodeAt(0), v.errors.en);
 
 					else if (lang === 'FA')
-						validation.checkCharacter(e, input, validation.codes.faAlpha, value[i].charCodeAt(0), validation.errors.fa);
+						v.checkCharacter(e, input, v.codes.faAlpha, value[i].charCodeAt(0), v.errors.fa);
 
 				}
 
@@ -616,17 +616,17 @@
 
 			input.on('blur', function (e) {
 
-				if (validation.returnFalseKeys(e) || e.ctrlKey)
+				if (v.returnFalseKeys(e) || e.ctrlKey)
 					return;
 
 				if (input.isRequired()) {
 
 					if (!input.isEmpty())
-						validation.checkMinCharacter(this, minChar);
+						v.checkMinCharacter(this, minChar);
 
 				} else {
 
-					validation.checkMinCharacter(this, minChar);
+					v.checkMinCharacter(this, minChar);
 
 				}
 
@@ -643,14 +643,14 @@
 
 				value = input.value.trim();
 
-				if (validation.returnFalseKeys(e) || e.ctrlKey)
+				if (v.returnFalseKeys(e) || e.ctrlKey)
 					return;
 
 				if (value.length >= maxChar) {
 
 					e.preventDefault();
 
-					input.addError(validation.errors.maxChar[0] + ' ' + maxChar + ' ' + validation.errors.maxChar[1]);
+					input.addError(v.errors.maxChar[0] + ' ' + maxChar + ' ' + v.errors.maxChar[1]);
 
 				} else {
 
@@ -696,7 +696,7 @@
 
 				input.on('keydown', function (e) {
 
-					validation.translateDigit(e, this, validation.codes.enDigits);
+					v.translateDigit(e, this, v.codes.enDigits);
 
 				});
 
@@ -704,16 +704,16 @@
 
 			input.on('keydown keyup', function (e) {
 
-				value = validation.removeCommas(input.value);
+				value = v.removeCommas(input.value);
 
-				if (validation.returnFalseKeys(e))
+				if (v.returnFalseKeys(e))
 					return;
 
 				if (value > maxNum) {
 
 					e.preventDefault();
 
-					input.addError(validation.errors.maxNum[0] + ' ' + maxNum + ' ' + validation.errors.minNum[1]);
+					input.addError(v.errors.maxNum[0] + ' ' + maxNum + ' ' + v.errors.minNum[1]);
 
 					input.value = input.value.substr(0, this.value.length - 1);
 
@@ -734,7 +734,7 @@
 
 			input.on('blur', function () {
 
-				validation.pattern.check(input, validation.pattern.mobile, validation.errors.mobile);
+				v.pattern.check(input, v.pattern.mobile, v.errors.mobile);
 
 			});
 
@@ -744,7 +744,7 @@
 
 			input.on('blur', function () {
 
-				validation.pattern.check(input, validation.pattern.phone, validation.errors.phone);
+				v.pattern.check(input, v.pattern.phone, v.errors.phone);
 
 			});
 
@@ -754,7 +754,7 @@
 
 			if (typeof input === 'string') {
 
-				return validation.isIBAN(input);
+				return v.isIBAN(input);
 
 			} else if (typeof input === 'object') {
 
@@ -766,15 +766,15 @@
 
 						if (!input.isEmpty()) {
 
-							if (!validation.isIBAN(value))
-								input.addError(validation.errors.IBAN);
+							if (!v.isIBAN(value))
+								input.addError(v.errors.IBAN);
 
 						}
 
 					} else {
 
-						if (!validation.isIBAN(value))
-							input.addError(validation.errors.IBAN);
+						if (!v.isIBAN(value))
+							input.addError(v.errors.IBAN);
 
 					}
 
@@ -794,15 +794,15 @@
 
 					if (!input.isEmpty()) {
 
-						if (!validation.checkPersonalID(value))
-							input.addError(validation.errors.personalID);
+						if (!v.checkPersonalID(value))
+							input.addError(v.errors.personalID);
 
 					}
 
 				} else {
 
-					if (!validation.checkPersonalID(value))
-						input.addError(validation.errors.personalID);
+					if (!v.checkPersonalID(value))
+						input.addError(v.errors.personalID);
 
 				}
 
@@ -818,13 +818,13 @@
 
 				if (input.isRequired()) {
 
-					if (!input.isEmpty() && !validation.checkZipCode(value))
-						validation.addError(input, validation.errors.zipCode);
+					if (!input.isEmpty() && !v.checkZipCode(value))
+						v.addError(input, v.errors.zipCode);
 
 				} else {
 
-					if (!validation.checkZipCode(value))
-						validation.addError(input, validation.errors.zipCode);
+					if (!v.checkZipCode(value))
+						v.addError(input, v.errors.zipCode);
 
 				}
 
@@ -856,7 +856,7 @@
 
 			}
 
-			// this.addError(input, validation.errors.checkbox[0] + ' ' + (required ? required : 1) + ' ' + validation.errors.checkbox[1]);
+			// this.addError(input, v.errors.checkbox[0] + ' ' + (required ? required : 1) + ' ' + v.errors.checkbox[1]);
 
 			return false;
 
@@ -878,7 +878,7 @@
 
 			}
 
-			// this.addError(input, validation.errors.radio);
+			// this.addError(input, v.errors.radio);
 
 			return false;
 
@@ -1119,7 +1119,7 @@
 
 						if (options && options.console) {
 
-							console.error('Validation.js: Form (" ' + (form) + ' ") elements are not valid! Please check values.');
+							console.error('v.js: Form (" ' + (form) + ' ") elements are not valid! Please check values.');
 
 							for (var k = 0, kl = invalidInputs.length; k < kl; k++) {
 								console.error(invalidInputs[k][1], invalidInputs[k][0]);
@@ -1160,13 +1160,13 @@
 			if (options) {
 
 				if (options.parentNode)
-					validation.errors.parentNode = options.parentNode;
+					v.errors.parentNode = options.parentNode;
 
 				if (options.errors) {
 
 					for (var i in options.errors)
-						if (options.errors.hasOwnProperty(i) && validation.errors.hasOwnProperty(i))
-							validation.errors[i] = options.errors[i];
+						if (options.errors.hasOwnProperty(i) && v.errors.hasOwnProperty(i))
+							v.errors[i] = options.errors[i];
 
 				}
 
@@ -1202,7 +1202,7 @@
 
 							this.addValidationAttr(input, 'required', true);
 
-							validation.required(input);
+							v.required(input);
 
 							break;
 
@@ -1210,7 +1210,7 @@
 
 							this.addValidationAttr(input, 'email', true);
 
-							validation.email(input);
+							v.email(input);
 
 							break;
 
@@ -1218,7 +1218,7 @@
 
 							this.addValidationAttr(input, 'url', true);
 
-							validation.url(input);
+							v.url(input);
 
 							break;
 
@@ -1226,7 +1226,7 @@
 
 							this.addValidationAttr(input, 'domain', true);
 
-							validation.domain(input);
+							v.domain(input);
 
 							break;
 
@@ -1234,7 +1234,7 @@
 
 							this.addValidationAttr(input, 'number', true);
 
-							validation.number(input, ruleValue);
+							v.number(input, ruleValue);
 
 							break;
 
@@ -1242,7 +1242,7 @@
 
 							this.addValidationAttr(input, 'alphabet', true);
 
-							validation.alphabet(input, ruleValue);
+							v.alphabet(input, ruleValue);
 
 							break;
 
@@ -1250,7 +1250,7 @@
 
 							this.addValidationAttr(input, 'min', true);
 
-							validation.minCharacter(input, ruleValue);
+							v.minCharacter(input, ruleValue);
 
 							break;
 
@@ -1258,7 +1258,7 @@
 
 							this.addValidationAttr(input, 'max', true);
 
-							validation.maxCharacter(input, ruleValue);
+							v.maxCharacter(input, ruleValue);
 
 							break;
 
@@ -1266,7 +1266,7 @@
 
 							this.addValidationAttr(input, 'min-num', true);
 
-							validation.minNumber(input, ruleValue);
+							v.minNumber(input, ruleValue);
 
 							break;
 
@@ -1274,7 +1274,7 @@
 
 							this.addValidationAttr(input, 'max-num', true);
 
-							validation.maxNumber(input, ruleValue);
+							v.maxNumber(input, ruleValue);
 
 							break;
 
@@ -1282,7 +1282,7 @@
 
 							this.addValidationAttr(input, 'mobile', true);
 
-							validation.mobile(input);
+							v.mobile(input);
 
 							break;
 
@@ -1290,7 +1290,7 @@
 
 							this.addValidationAttr(input, 'phone', true);
 
-							validation.phone(input);
+							v.phone(input);
 
 							break;
 
@@ -1298,7 +1298,7 @@
 
 							this.addValidationAttr(input, 'iban', true);
 
-							validation.iban(input);
+							v.iban(input);
 
 							break;
 
@@ -1306,7 +1306,7 @@
 
 							this.addValidationAttr(input, 'personalID', true);
 
-							validation.personalID(input);
+							v.personalID(input);
 
 							break;
 
@@ -1314,7 +1314,7 @@
 
 							this.addValidationAttr(input, 'zipCode', true);
 
-							validation.zipCode(input);
+							v.zipCode(input);
 
 							break;
 
@@ -1322,7 +1322,7 @@
 
 							this.addValidationAttr(input, 'file', true);
 
-							validation.file(input);
+							v.file(input);
 
 							break;
 
