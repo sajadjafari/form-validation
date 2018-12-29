@@ -57,12 +57,12 @@
 			number: 'Please enter numbers only',
 			IBAN: 'IBAN code in not valid!',
 			personalID: 'ID is not valid!',
-			zipCode: 'Postal code is not valid!',
+			postalCode: 'Postal code is not valid!',
 			en: 'Please enter in English',
 			fa: 'Please enter in Persian',
-			minChar: ['You can enter minimum', 'characters!'],
+			minChar: ['You must enter minimum', 'characters!'],
 			maxChar: ['You can enter maximum', 'characters!'],
-			minNum: ['You must enter a number grater than', ''],
+			minNum: ['You must enter a number greater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
 			checkbox: ['Required, Select at least', 'items!'],
 			radio: 'Required, Please select an item!',
@@ -289,12 +289,12 @@
 
 		};
 
-		this.isZipCode = function (value) {
+		this.isPostalCode = function (value) {
 
 			if (this.isNumber(value))
 				value = value.toString();
 
-			return this.checkZipCode(value.trim());
+			return this.checkPostalCode(value.trim());
 
 		};
 
@@ -460,7 +460,7 @@
 
 		};
 
-		this.checkZipCode = function (code) {
+		this.checkPostalCode = function (code) {
 
 			return code.search(/^(\d{5}-?\d{5})$/) >= 0;
 
@@ -715,28 +715,12 @@
 
 			});
 
-			input.on('focusin', function () {
-
-				input.removeError();
-
-			});
-
 		};
 
 		this.maxNumber = function (input, max) {
 
 			var maxNum = parseInt(max),
 				value;
-
-			if (!input.hasMinNum()) {
-
-				input.on('keydown', function (e) {
-
-					v.translateDigit(e, this, v.codes.enDigits);
-
-				});
-
-			}
 
 			input.on('keydown keyup', function (e) {
 
@@ -754,13 +738,6 @@
 					input.value = input.value.substr(0, this.value.length - 1);
 
 				}
-
-			});
-
-			input.on('blur input', function () {
-
-				// if (!hasAnotherError)
-				input.removeError();
 
 			});
 
@@ -846,7 +823,7 @@
 
 		};
 
-		this.zipCode = function (input) {
+		this.postalCode = function (input) {
 
 			input.on('blur', function () {
 
@@ -854,13 +831,13 @@
 
 				if (input.isRequired()) {
 
-					if (!input.isEmpty() && !v.checkZipCode(value))
-						v.addError(input, v.errors.zipCode);
+					if (!input.isEmpty() && !v.checkPostalCode(value))
+						v.addError(input, v.errors.postalCode);
 
 				} else {
 
-					if (!v.checkZipCode(value))
-						v.addError(input, v.errors.zipCode);
+					if (!v.checkPostalCode(value))
+						v.addError(input, v.errors.postalCode);
 
 				}
 
@@ -1019,7 +996,8 @@
 						invalidInputs.push([[input], errorMessage]);
 
 					},
-					formInputs = document.querySelector(form).querySelectorAll('[data-validation]'),
+					formElem = document.querySelector(form),
+					formInputs = formElem.querySelectorAll('[data-validation]'),
 					invalidInputs = [],
 					rule,
 					ruleValue,
@@ -1027,6 +1005,8 @@
 					validationRules;
 
 				if (formInputs.length > 0) {
+
+					formElem.removeError();
 
 					// Reset initialized input names.
 					v.InitializedName = {};
@@ -1063,77 +1043,77 @@
 								case 'required':
 
 									if (input.isEmpty())
-										addFormError(input, 'Field is required!');
+										addFormError(input, v.errors.required);
 
 									break;
 
 								case 'url':
 
 									if (!input.isURL())
-										addFormError(input, 'Enter a valid URL!');
+										addFormError(input, v.errors.url);
 
 									break;
 
 								case 'domain':
 
 									if (!input.isDomain())
-										addFormError(input, 'Enter a valid Domain!');
+										addFormError(input, v.errors.domain);
 
 									break;
 
 								case 'email':
 
 									if (!input.isEmail())
-										addFormError(input, 'Enter a valid Email!');
+										addFormError(input, v.errors.email);
 
 									break;
 
 								case 'min':
 
 									if (!input.hasMinChar())
-										addFormError(input, 'Minimum character [ ' + ruleValue + ' ]!');
+										addFormError(input, v.errors.minChar[0] + ' ' + ruleValue + ' ' + v.errors.minChar[1]);
 
 									break;
 
 								case 'min-num':
 
 									if (!input.hasMinNum())
-										addFormError(input, 'Maximum character [ ' + ruleValue + ' ]!');
+										addFormError(input, v.errors.minNum[0] + ' ' + ruleValue + ' ' + v.errors.minNum[1]);
 
 									break;
 
 								case 'mobile':
 
 									if (!input.isMobile())
-										addFormError(input, 'Enter a valid Mobile number!');
+										addFormError(input, v.errors.mobile);
 
 									break;
 
 								case 'phone':
 
 									if (!input.isPhone())
-										addFormError(input, 'Enter a valid Phone number!');
+										addFormError(input, v.errors.phone);
 
 									break;
 
 								case 'iban':
 
 									if (!input.isIBAN())
-										addFormError(input, 'Enter a valid SHEBA Code (IBAN)!');
+										addFormError(input, v.errors.IBAN);
 
 									break;
 
 								case 'personal-id':
 
 									if (!input.isPersonalID())
-										addFormError(input, 'Enter a valid Personal Id!');
+										addFormError(input, v.errors.personalID);
 
 									break;
 
 								case 'postal-code':
 
-									if (!input.isZipCode())
-										addFormError(input, 'Enter a valid Postal Code!');
+									if (!input.isPostalCode())
+										addFormError(input, v.errors.postalCode);
 
 									break;
 
@@ -1371,11 +1351,11 @@
 
 							break;
 
-						case 'zip-code':
+						case 'postal-code':
 
-							this.addValidationAttr(input, 'zipCode', true);
+							this.addValidationAttr(input, 'postalCode', true);
 
-							v.zipCode(input);
+							v.postalCode(input);
 
 							break;
 
@@ -1517,9 +1497,9 @@
 
 	};
 
-	EventTarget.prototype.isZipCode = function () {
+	EventTarget.prototype.isPostalCode = function () {
 
-		return validation.isZipCode(this.value);
+		return validation.isPostalCode(this.value);
 
 	};
 

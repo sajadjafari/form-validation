@@ -11,7 +11,7 @@
 
 <section class="view">
 
-    <form class="form view-inner">
+    <form class="form view-inner" onsubmit="validateForm(event, '.form')">
 
         <h1 class="title">Javascript Validation</h1>
 
@@ -79,9 +79,9 @@
         </div>
 
         <div class="input-group">
-            <label for="input10">Input [required|zip-code]</label>
+            <label for="input10">Input [required|postal-code]</label>
             <div class="input-row">
-                <input type="text" id="input10" class="input" data-validation="required|zip-code">
+                <input type="text" id="input10" class="input" data-validation="required|postal-code">
             </div>
         </div>
 
@@ -120,11 +120,16 @@
             </div>
         </div>
 
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+
+
     </form>
 
     <!-- Form validation on form submit -->
 
-    <form class="form-2 view-inner" onsubmit="validateForm(event)">
+    <form class="form-2 view-inner" onsubmit="validateForm(event, '.form-2')">
 
         <h1 class="title">Form Validation</h1>
 
@@ -227,7 +232,7 @@
         </div>
 
         <div>
-            <button type="submit" onsubmit="return false">Submit</button>
+            <button type="submit">Submit</button>
         </div>
 
     </form>
@@ -239,8 +244,8 @@
 <!-- <script type="text/javascript" src="script/validation.js"></script> -->
 <script type="text/javascript">
 
-	function validateForm(e) {
-		if (validation.form('.form-2', {input: true}))
+	function validateForm(e, form) {
+		if (validation.form(form, {input: true}))
 			return true;
 		else
 			e.preventDefault();
