@@ -64,7 +64,7 @@
 			maxChar: ['You can enter maximum', 'characters!'],
 			minNum: ['You must enter a number grater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
-			checkbox: ['Required, select at least', 'items!'],
+			checkbox: ['Required, Select at least', 'items!'],
 			radio: 'Required, Please select an item!',
 			file: 'File is not valid!',
 			fileType: 'Type of selected file is not valid!',
