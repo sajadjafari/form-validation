@@ -124,6 +124,8 @@
 
 		};
 
+		this.InitializedName = {};
+
 		// -- Error handlers
 
 		this.createErrorSpan = function (errorMessage) {
@@ -853,7 +855,8 @@
 
 		this.checkbox = function (input, required) {
 
-			var inputs = input.querySelectorAll('[type="checkbox"]'),
+			var selector = ('[type="checkbox"][name="' + input.name + '"]'),
+				inputs = document.querySelectorAll(selector),
 				valid = 0;
 
 			// this.removeError(input);
@@ -883,7 +886,8 @@
 
 		this.radio = function (input) {
 
-			var inputs = input.querySelectorAll('[type="radio"]');
+			var selector = ('[type="radio"][name="' + input.name + '"]'),
+				inputs = document.querySelectorAll(selector);
 
 			for (var i = 0, l = inputs.length; i < l; i++) {
 
@@ -1007,6 +1011,9 @@
 
 				if (formInputs.length > 0) {
 
+					// Reset initialized input names.
+					v.InitializedName = {};
+
 					for (var i = 0, vl = formInputs.length; i < vl; i++) {
 
 						input = formInputs[i];
@@ -1019,8 +1026,18 @@
 						for (var j = 0, rl = validationRules.length; j < rl; j++) {
 
 							rule = validationRules[j].split(':')[0];
-
 							ruleValue = validationRules[j].split(':')[1];
+
+							// If input name is already initialized, continue with next input
+
+							if (input.name) {
+
+								if (v.InitializedName[input.name])
+									continue;
+
+								v.InitializedName[input.name] = true;
+
+							}
 
 							// Rules that are set in data-validation attr.
 
@@ -1105,18 +1122,31 @@
 
 								case 'checkbox':
 
-									if (!v.checkbox(input, ruleValue))
-										addFormError(input, v.errors.checkbox[0] + ' ' + ruleValue + ' ' + v.errors.checkbox[1]);
+									//var allCheckboxes = document.querySelectorAll('[name="' + input.name + '"]');
+
+									// if (!v.InitializedName[input.name]) {
+
+										// v.InitializedName[input.name] = true;
+
+										if (!v.checkbox(input, ruleValue))
+											addFormError(input, v.errors.checkbox[0] + ' ' + ruleValue + ' ' + v.errors.checkbox[1]);
+
+									// }
 
 									break;
 
 								case 'radio':
 
-									if (!v.radio(input, ruleValue))
-										addFormError(input, v.errors.radio);
+									// if (!v.InitializedName[input.name]) {
+
+										// v.InitializedName[input.name] = true;
+
+										if (!v.radio(input, ruleValue))
+											addFormError(input, v.errors.radio);
+
+									// }
 
 									break;
-
 
 								case 'file':
 
