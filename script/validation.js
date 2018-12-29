@@ -137,12 +137,22 @@
 		this.removeError = function (input) {
 
 			var _regexp = new RegExp('\\s*' + v.errors.cn, 'g'),
-				parent = (v.errors.parentNode !== '' ? input.findParent(v.errors.parentNode) : input.parentElement),
-				errors = parent.querySelectorAll('.error');
+				foundParent, parent, errors;
 
+			if (!!v.errors.parentNode && v.errors.parentNode !== '') {
+
+				foundParent = input.findParent(v.errors.parentNode);
+				parent = foundParent ? foundParent : input.parentElement;
+
+			}
+
+			errors = parent.querySelectorAll('.error');
+
+			// Remove className and data-error attr
 			parent.className = parent.className.replace(_regexp, '');
 			parent.removeAttribute('data-error');
 
+			// Remove all error elements
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
 					errors[i].remove();
@@ -153,13 +163,20 @@
 
 		this.addError = function (input, error) {
 
-			var _regexp = new RegExp('\\s*' + v.errors.cn, 'g'),
-				parent = (v.errors.parentNode !== '' ? input.findParent(v.errors.parentNode) : input.parentElement),
-				errors = parent.querySelectorAll('.error');
+			var parent, foundParent, errors;
 
-			if (!parent.className.match(_regexp)) {
-				parent.className = parent.className + ' ' + v.errors.cn;
+			if (!!v.errors.parentNode && v.errors.parentNode !== '') {
+
+				foundParent = input.findParent(v.errors.parentNode);
+				parent = foundParent ? foundParent : input.parentElement;
+
 			}
+
+			errors = parent.querySelectorAll('.error');
+
+			if (!parent.hasClass(v.errors.cn))
+				parent.className = parent.className + ' ' + v.errors.cn;
+
 			parent.setAttribute(v.errors.dError, error);
 
 			// append error span
@@ -1404,13 +1421,30 @@
 
 	};
 
-	EventTarget.prototype.findParent = function (cn) {
+	EventTarget.prototype.hasClass = function (className) {
+
+		return this.className.split(' ').indexOf(className) > -1;
+
+	};
+
+	EventTarget.prototype.findParent = function (className) {
 
 		var p = this.parentNode,
-			_regexp = new RegExp('\\s*' + cn, 'g');
+			match = function (parent) {
 
-		while (!p.className.match(_regexp)) {
+				if (!parent || parent.className === '' || parent.className === undefined || parent.className === null)
+					return null;
+
+				return parent.hasClass(className);
+
+			};
+
+		while (!match(p)) {
+
+			if (!p) return null;
+
 			p = p.parentNode;
+
 		}
 
 		return p;
