@@ -66,7 +66,9 @@
 			maxNum: ['You must enter a number lower than', ''],
 			checkbox: ['Required, Please check at least', 'items.'],
 			radio: 'Required, Please select an item',
-			file: 'File is Noot valid!',
+			file: 'File is not valid!',
+			fileType: 'Type of selected file is not valid!',
+			fileSize: 'Size of selected file is not valid!',
 
 		};
 
@@ -910,11 +912,19 @@
 				validateFile = function (file) {
 
 					if (types) {
-						type = t.fileType(file, types);
+						type = v.fileType(file, types);
 					}
 
 					if (sizeMax) {
-						size = t.fileSize(file, sizeMin, sizeMax)
+						size = v.fileSize(file, sizeMin, sizeMax);
+					}
+
+					if (!type && !size) {
+						input.addError(v.errors.file);
+					} else if (!type) {
+						input.addError(v.errors.fileType);
+					} else if (!size) {
+						input.addError(v.errors.fileSize);
 					}
 
 					return type && size;
@@ -922,6 +932,8 @@
 				},
 				type = true,
 				size = type;
+
+			input.removeError();
 
 			if (input.files.length) {
 
@@ -945,8 +957,6 @@
 					input.addError('File is not valid!');
 				}
 
-				console.log('files are ' + (v.isFile(this) ? '' : 'not') + ' valid', this.files)
-
 			})
 
 		};
@@ -960,6 +970,21 @@
 			}
 
 			input.validations[validation] = valid;
+
+		};
+
+		this.removeErrorWatch = function (input) {
+
+			var tagName = input.tagName.toLocaleLowerCase(),
+				type = input.type;
+
+			if (tagName === 'input' && type !== 'file') {
+
+				input.on('focusin', function () {
+					input.removeError();
+				});
+
+			}
 
 		};
 
@@ -1183,13 +1208,7 @@
 
 				rules = input.getAttribute('data-validation').split('|');
 
-				if (input.tagName === 'INPUT') {
-
-					input.on('focusin', function () {
-						this.removeError();
-					});
-
-				}
+				v.removeErrorWatch(input);
 
 				for (var j = 0; j < rules.length; j++) {
 
