@@ -64,8 +64,8 @@
 			maxChar: ['You can enter maximum', 'characters!'],
 			minNum: ['You must enter a number grater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
-			checkbox: ['Required, Please check at least', 'items.'],
-			radio: 'Required, Please select an item',
+			checkbox: ['Required, Required, select at least', 'items!'],
+			radio: 'Required, Please select an item!',
 			file: 'File is not valid!',
 			fileType: 'Type of selected file is not valid!',
 			fileSize: 'Size of selected file is not valid!',
@@ -181,6 +181,21 @@
 		this.removeCommas = function (value) {
 
 			return value.replace(/[,،]/g, '');
+
+		};
+
+		this.removeErrorWatch = function (input) {
+
+			var tagName = input.tagName.toLocaleLowerCase(),
+				type = input.type;
+
+			if (tagName === 'input' && type !== 'file') {
+
+				input.on('focusin', function () {
+					input.removeError();
+				});
+
+			}
 
 		};
 
@@ -868,10 +883,7 @@
 
 		this.radio = function (input) {
 
-			var inputs = input.querySelectorAll('[type="radio"]'),
-				valid = 0;
-
-			// this.removeError(input);
+			var inputs = input.querySelectorAll('[type="radio"]');
 
 			for (var i = 0, l = inputs.length; i < l; i++) {
 
@@ -879,8 +891,6 @@
 					return true;
 
 			}
-
-			// this.addError(input, v.errors.radio);
 
 			return false;
 
@@ -970,21 +980,6 @@
 			}
 
 			input.validations[validation] = valid;
-
-		};
-
-		this.removeErrorWatch = function (input) {
-
-			var tagName = input.tagName.toLocaleLowerCase(),
-				type = input.type;
-
-			if (tagName === 'input' && type !== 'file') {
-
-				input.on('focusin', function () {
-					input.removeError();
-				});
-
-			}
 
 		};
 
@@ -1111,14 +1106,14 @@
 								case 'checkbox':
 
 									if (!v.checkbox(input, ruleValue))
-										addFormError(input, 'Required, select at least ' + ruleValue + ' items!');
+										addFormError(input, v.errors.checkbox[0] + ' ' + ruleValue + ' ' + v.errors.checkbox[1]);
 
 									break;
 
 								case 'radio':
 
 									if (!v.radio(input, ruleValue))
-										addFormError(input, 'Required!');
+										addFormError(input, v.errors.radio);
 
 									break;
 
