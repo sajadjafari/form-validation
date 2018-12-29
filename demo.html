@@ -140,6 +140,7 @@
             </div>
         </div>
 
+        <!-- Password -->
         <div class="input-group">
             <label for="input1">Password [required]</label>
             <div class="input-row">
@@ -147,48 +148,58 @@
             </div>
         </div>
 
+        <!-- Checkbox -->
         <div class="input-group">
             <span>Input checkbox [checkbox:2]</span>
             <div class="input-row">
                 <div class="input-checkbox">
                     <label class="checkbox" for="checkOne">
-                        <input type="checkbox" name="check[]" value="1" id="checkOne" data-validation="checkbox:2" style="display: inline-block; margin-top: 3px">
+                        <input type="checkbox" name="check[]" value="1" id="checkOne" data-validation="checkbox:2"
+                               style="display: inline-block; margin-top: 3px">
                         Check One
                     </label>
                     <label class="checkbox" for="checkTwo">
-                        <input type="checkbox" name="check[]" value="2" id="checkTwo" data-validation="checkbox:2" style="display: inline-block; margin-top: 3px">
+                        <input type="checkbox" name="check[]" value="2" id="checkTwo" data-validation="checkbox:2"
+                               style="display: inline-block; margin-top: 3px">
                         Check Two
                     </label>
                     <label class="checkbox" for="checkThree">
-                        <input type="checkbox" name="check[]" value="3" id="checkThree" data-validation="checkbox:2" style="display: inline-block; margin-top: 3px">
+                        <input type="checkbox" name="check[]" value="3" id="checkThree" data-validation="checkbox:2"
+                               style="display: inline-block; margin-top: 3px">
                         Check Three
                     </label>
                 </div>
             </div>
         </div>
 
+        <!-- Radio -->
         <div class="input-group">
             <span>Input radio [required]</span>
             <div class="input-row">
                 <div class="input-radio">
                     <label class="radio" for="radioOne">
-                        <input type="radio" name="radios" id="radioOne" data-validation="radio" style="display: inline-block; margin-top: 3px">
+                        <input type="radio" name="radios" id="radioOne" data-validation="radio"
+                               style="display: inline-block; margin-top: 3px">
                         Radio One
                     </label>
                     <label class="radio" for="radioTwo">
-                        <input type="radio" name="radios" id="radioTwo" data-validation="radio" style="display: inline-block; margin-top: 3px">
+                        <input type="radio" name="radios" id="radioTwo" data-validation="radio"
+                               style="display: inline-block; margin-top: 3px">
                         Radio Two
                     </label>
                     <label class="radio" for="radioThree">
-                        <input type="radio" name="radios" id="radioThree" data-validation="radio" style="display: inline-block; margin-top: 3px">
+                        <input type="radio" name="radios" id="radioThree" data-validation="radio"
+                               style="display: inline-block; margin-top: 3px">
                         Radio Three
                     </label>
                 </div>
             </div>
         </div>
 
+        <!-- file -->
         <div class="input-group">
-            <label for="file">Input [data-validation="file"][data-types="png, jpg"][data-size-min="1000"][data-size-max="50000"]</label>
+            <label for="file">Input [data-validation="file"][data-types="png,
+                jpg"][data-size-min="1000"][data-size-max="50000"]</label>
             <div class="input-row">
                 <input type="file" id="file" class="file"
                        data-accept=""
@@ -196,6 +207,20 @@
                        data-types="png, jpg"
                        data-size-min="1000"
                        data-size-max="50000">
+            </div>
+        </div>
+
+        <!-- select -->
+        <div class="input-group">
+            <label for="select">Select [data-validation="required"]</label>
+            <div class="input-row">
+                <select id="select" class="select" data-validation="required">
+                    <option value="" selected>Select an option</option>
+                    <option value="one">option one</option>
+                    <option value="two">potion two</option>
+                    <option value="three">option three</option>
+                    <option value="four">option four</option>
+                </select>
             </div>
         </div>
 
@@ -212,22 +237,22 @@
 <!-- <script type="text/javascript" src="script/validation.js"></script> -->
 <script type="text/javascript">
 
-    function validateForm (e) {
-    	if (validation.form('.form-2', {input: true}))
-    	    return true;
-    	else
-		    e.preventDefault();
-    }
+	function validateForm(e) {
+		if (validation.form('.form-2', {input: true}))
+			return true;
+		else
+			e.preventDefault();
+	}
 
-    validation.init({
-        // Define parent class name that you want add error into it.
-        parentNode: 'input-row',
-        errors: {
-            required: 'This field is required (custom)',
-            email: 'Enter a valid Email (custom)',
-            mobile: 'Enter a valid Mobile number (custom)'
-        }
-    });
+	validation.init({
+		// Define parent class name that you want add error into it.
+		parentNode: 'input-row',
+		errors: {
+			required: 'This field is required (custom)',
+			email: 'Enter a valid Email (custom)',
+			mobile: 'Enter a valid Mobile number (custom)'
+		}
+	});
 
 </script>
 </body>
