@@ -4,7 +4,7 @@
 
 	var Validations = function () {
 
-		var t = this;
+		var v = this;
 
 		this.codes = {
 
@@ -65,7 +65,8 @@
 			minNum: ['You must enter a number grater than', ''],
 			maxNum: ['You must enter a number lower than', ''],
 			checkbox: ['Required, Please check at least', 'items.'],
-			radio: 'Required, Please select an item'
+			radio: 'Required, Please select an item',
+			file: 'File is Noot valid!',
 
 		};
 
@@ -291,7 +292,7 @@
 
 				minChar = minChar.match(/[0-9]+/)[0];
 
-				return t.checkMinNum($this, minChar, true);
+				return v.checkMinNum($this, minChar, true);
 
 			} else {
 
@@ -461,7 +462,7 @@
 
 				if (value < minNum) {
 
-					input.addError(t.errors.minNum[0] + ' ' + minNum + ' ' + t.errors.minNum[1]);
+					input.addError(v.errors.minNum[0] + ' ' + minNum + ' ' + v.errors.minNum[1]);
 
 				} else if (!input.isRequired()) {
 
@@ -471,7 +472,7 @@
 
 			} else {
 
-				input.addError(t.errors.NaN);
+				input.addError(v.errors.NaN);
 				return false;
 
 			}
@@ -510,7 +511,7 @@
 				var value = input.value.trim();
 
 				if (value === '' || value === null) {
-					t.addError(this, validation.errors.required);
+					v.addError(this, validation.errors.required);
 				}
 
 			})
@@ -668,11 +669,11 @@
 				if (input.isRequired()) {
 
 					if (!input.isEmpty())
-						t.checkMinNum(this, min);
+						v.checkMinNum(this, min);
 
 				} else {
 
-					t.checkMinNum(this, min);
+					v.checkMinNum(this, min);
 
 				}
 
@@ -940,11 +941,11 @@
 
 			input.on('change', function () {
 
-				if (!t.isFile(this)) {
+				if (!v.isFile(this)) {
 					input.addError('File is not valid!');
 				}
 
-				console.log('files are ' + (t.isFile(this) ? '' : 'not') + ' valid', this.files)
+				console.log('files are ' + (v.isFile(this) ? '' : 'not') + ' valid', this.files)
 
 			})
 
@@ -971,7 +972,7 @@
 				var addFormError = function (input, errorMessage) {
 
 						if (options && options.input) {
-							t.addError(input, errorMessage);
+							v.addError(input, errorMessage);
 						}
 
 						invalidInputs.push([[input], errorMessage]);
@@ -1084,14 +1085,14 @@
 
 								case 'checkbox':
 
-									if (!validation.checkbox(input, ruleValue))
+									if (!v.checkbox(input, ruleValue))
 										addFormError(input, 'Required, select at least ' + ruleValue + ' items!');
 
 									break;
 
 								case 'radio':
 
-									if (!validation.radio(input, ruleValue))
+									if (!v.radio(input, ruleValue))
 										addFormError(input, 'Required!');
 
 									break;
@@ -1099,8 +1100,8 @@
 
 								case 'file':
 
-									if (!validation.isFile(input))
-										addFormError(input, 'File is not valid!');
+									if (!v.isFile(input))
+										addFormError(input, v.errors.file);
 
 									break;
 
