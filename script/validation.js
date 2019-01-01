@@ -41,7 +41,7 @@
 		this.errors = {
 
 			// Input errors class name and error message attr name, default is [data-error].
-			cn: 'input-error',
+			className: 'input-error',
 			dError: 'data-error',
 			// parentNode: options && options.parentNode ? options.parentNode : '',
 			parentNode: '',
@@ -136,7 +136,7 @@
 
 		this.removeError = function (input) {
 
-			var _regexp = new RegExp('\\s*' + v.errors.cn, 'g'),
+			var _regexp = new RegExp('\\s*' + v.errors.className, 'g'),
 				foundParent, parent, errors;
 
 			if (!!v.errors.parentNode && v.errors.parentNode !== '') {
@@ -174,8 +174,8 @@
 
 			errors = parent.querySelectorAll('.error');
 
-			if (!parent.hasClass(v.errors.cn))
-				parent.className = parent.className + ' ' + v.errors.cn;
+			if (!parent.hasClass(v.errors.className))
+				parent.className = parent.className + ' ' + v.errors.className;
 
 			parent.setAttribute(v.errors.dError, error);
 
@@ -1181,6 +1181,10 @@
 						return true;
 
 					}
+
+				} else {
+
+					return true;
 
 				}
 
